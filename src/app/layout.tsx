@@ -16,7 +16,20 @@ const inter = Inter({
 
 export const metadata: Metadata = {
   title: "VIP Transformative Living | Coach Wayne Dawson",
-  description: "Transformative life coaching for men navigating pivotal crossroads. Discover your purpose, power, and prosperity.",
+  description: "For driven men navigating life's pivotal crossroads. Align your Values, Identity, and Purpose to achieve breakthrough. Guided by Coach Wayne Dawson.",
+  icons: {
+    icon: '/images/Icon-White.png',
+    shortcut: '/images/Icon-White.png',
+    apple: '/images/Icon-White.png',
+  },
+  openGraph: {
+    title: "VIP Transformative Living | Coach Wayne Dawson",
+    description: "Transformative life coaching for men. Discover your purpose, power, and prosperity.",
+    url: 'https://viptansformativeliving.com',
+    siteName: 'VIP Transformative Living',
+    locale: 'en_US',
+    type: 'website',
+  },
 };
 
 export default function RootLayout({

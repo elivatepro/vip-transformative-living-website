@@ -14,7 +14,7 @@ export default function Home() {
         
         <div className="container mx-auto px-4 relative z-10 w-full">
           {/* THE HERO CARD */}
-          <div className="relative w-full bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:grid md:grid-cols-2 min-h-[75vh] md:min-h-[700px]">
+          <div className="relative w-full bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:grid md:grid-cols-2 min-h-0 h-auto md:min-h-[700px]">
             
             {/* CARD BACKGROUND IMAGE (Blurred) */}
             <div 
@@ -36,7 +36,7 @@ export default function Home() {
             </div>
 
             {/* MOBILE IMAGE (Stacked Top) */}
-            <div className="block md:hidden relative w-full h-[45vh] min-h-[350px]">
+            <div className="block md:hidden relative w-full h-[35vh] min-h-[250px]">
               <Image
                 src="/images/wayne-transparent.png"
                 alt="Coach Wayne"
@@ -62,15 +62,20 @@ export default function Home() {
             </div>
 
             {/* CONTENT (Text) */}
-            <div className="relative z-10 flex flex-col justify-end md:justify-center p-8 md:p-16 space-y-6 md:space-y-8 -mt-20 md:mt-0 bg-gradient-to-t from-[#121212] via-[#121212]/80 to-transparent md:bg-none">
-               <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif font-bold text-white md:text-gold-gradient leading-tight tracking-tight drop-shadow-2xl">
+            <div className="relative z-10 flex flex-col justify-end md:justify-center p-6 md:p-16 space-y-4 md:space-y-8 -mt-10 md:mt-0 bg-gradient-to-t from-[#121212] via-[#121212]/80 to-transparent md:bg-none">
+               <h1 className="text-3xl md:text-6xl lg:text-7xl font-serif font-bold text-white md:text-gold-gradient leading-tight tracking-tight drop-shadow-2xl">
                 Your Next Chapter <br className="md:hidden" /> Starts Here.
               </h1>
               <p className="text-sm md:text-xl text-white/90 font-light leading-relaxed drop-shadow-md max-w-xl">
-                For driven men navigating life's pivotal crossroads — career shifts, 
-                relationship evolution, or rediscovering purpose. Transform confusion 
-                into clarity with a proven framework that's guided hundreds of men 
-                to breakthrough.
+                <span className="md:hidden">
+                  For driven men navigating life's pivotal crossroads. Transform confusion into clarity with a proven framework.
+                </span>
+                <span className="hidden md:inline">
+                  For driven men navigating life's pivotal crossroads — career shifts, 
+                  relationship evolution, or rediscovering purpose. Transform confusion 
+                  into clarity with a proven framework that's guided hundreds of men 
+                  to breakthrough.
+                </span>
               </p>
               <div className="flex flex-col sm:flex-row gap-4 pt-4">
                 <Button variant="primary" size="lg" className="text-lg px-8 py-6 w-full sm:w-auto bg-gold-gradient text-black hover:brightness-110 border border-gold/50 shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all duration-300" asChild>
