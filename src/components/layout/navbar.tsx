@@ -5,18 +5,18 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, Home, User, Zap, Mic, Library, Mail, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { BookCallButton } from "@/components/book-call-button";
 
 const navLinks = [
-  { name: 'Home', href: '/' },
-  { name: 'About', href: '/about' },
-  { name: 'Coaching', href: '/coaching' },
-  { name: 'Speaking', href: '/speaking' },
-  { name: 'Resources', href: '/resources' },
-  { name: 'Newsletter', href: '/newsletter' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'Home', href: '/', icon: Home },
+  { name: 'About', href: '/about', icon: User },
+  { name: 'Coaching', href: '/coaching', icon: Zap },
+  { name: 'Speaking', href: '/speaking', icon: Mic },
+  { name: 'Resources', href: '/resources', icon: Library },
+  { name: 'Newsletter', href: '/newsletter', icon: Mail },
+  { name: 'Contact', href: '/contact', icon: Phone },
 ];
 
 export function Navbar() {
@@ -38,11 +38,24 @@ export function Navbar() {
     setIsMobileMenuOpen(false);
   }, [pathname]);
 
+  // Prevent scrolling when mobile menu is open
+  React.useEffect(() => {
+    if (isMobileMenuOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen]);
+
   return (
     <header
       className={cn(
         'fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out',
-        isScrolled ? 'bg-background/95 backdrop-blur-md shadow-md py-4' : 'bg-transparent py-6'
+        isScrolled ? 'bg-background/95 backdrop-blur-md shadow-md py-4' : 'bg-transparent py-6',
+        isMobileMenuOpen && 'bg-background' // Ensure header background is solid when menu is open
       )}
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
@@ -93,7 +106,7 @@ export function Navbar() {
 
         {/* Mobile Menu Toggle */}
         <button
-          className="md:hidden z-50 relative text-foreground hover:text-gold transition-colors"
+          className="md:hidden z-50 relative text-foreground hover:text-gold transition-colors p-2"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           aria-label="Toggle menu"
         >
@@ -108,36 +121,68 @@ export function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-40 flex flex-col pt-24 px-4 md:hidden"
+            transition={{ duration: 0.3, ease: "easeInOut" }}
+            className="fixed inset-0 z-40 flex flex-col pt-24 px-6 md:hidden bg-background h-screen overflow-y-auto"
           >
-            <div 
-              className="absolute inset-0 bg-cover bg-center z-[-1]" 
-              style={{ backgroundImage: "url('/images/hero-bg-mountain.jpg')" }} 
-            />
-            <div className="absolute inset-0 bg-black/90 backdrop-blur-sm z-[-1]" />
-            <nav className="flex flex-col gap-6 items-center relative z-50">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.href}
-                  href={link.href}
-                  className={cn(
-                    'text-2xl font-serif font-medium hover:text-gold transition-colors',
-                    pathname === link.href ? 'text-gold' : 'text-foreground'
-                  )}
-                >
-                  {link.name}
-                </Link>
-              ))}
-              <div className="mt-8">
+            {/* Background pattern or subtle effect can go here if needed, keeping it clean for now */}
+            
+            <nav className="flex flex-col gap-2 w-full max-w-sm mx-auto">
+              {navLinks.map((link, index) => {
+                const Icon = link.icon;
+                const isActive = pathname === link.href;
+                
+                return (
+                  <motion.div
+                    key={link.href}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 + 0.1 }}
+                  >
+                    <Link
+                      href={link.href}
+                      className={cn(
+                        'flex items-center gap-4 p-4 rounded-xl transition-all duration-200 group',
+                        isActive 
+                          ? 'bg-surface-elevated border border-gold/20' 
+                          : 'hover:bg-surface-elevated/50 border border-transparent hover:border-white/5'
+                      )}
+                    >
+                      <div className={cn(
+                        "p-2 rounded-lg transition-colors",
+                        isActive ? "bg-gold/10 text-gold" : "bg-surface text-muted-foreground group-hover:text-gold group-hover:bg-gold/10"
+                      )}>
+                        <Icon className="h-5 w-5" />
+                      </div>
+                      <span className={cn(
+                        "text-lg font-medium tracking-wide",
+                        isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"
+                      )}>
+                        {link.name}
+                      </span>
+                      
+                      {/* Active Indicator Arrow */}
+                      {isActive && (
+                        <div className="ml-auto w-1.5 h-1.5 rounded-full bg-gold shadow-[0_0_8px_rgba(197,160,89,0.5)]" />
+                      )}
+                    </Link>
+                  </motion.div>
+                );
+              })}
+              
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.5 }}
+                className="mt-8 mb-8"
+              >
                 <BookCallButton 
                   variant="primary" 
                   size="lg" 
-                  className="w-full"
+                  className="w-full shadow-lg shadow-gold/10"
                 >
                   Book Discovery Call
                 </BookCallButton>
-              </div>
+              </motion.div>
             </nav>
           </motion.div>
         )}
