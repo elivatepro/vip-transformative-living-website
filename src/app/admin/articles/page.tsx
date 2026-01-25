@@ -6,8 +6,8 @@ import { deleteNewsletter } from '@/app/admin/actions';
 
 export default async function NewslettersAdmin() {
   const supabase = await createClient();
-  const { data: newsletters } = await supabase
-    .from('newsletters')
+  const { data: newsletter_articles } = await supabase
+    .from('newsletter_articles')
     .select('*')
     .order('created_at', { ascending: false });
 
@@ -15,7 +15,7 @@ export default async function NewslettersAdmin() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-serif font-bold">Newsletters</h1>
-        <Link href="/admin/newsletters/new">
+        <Link href="/admin/articles/new">
           <Button>
             <Plus className="mr-2 h-4 w-4" /> New Article
           </Button>
@@ -33,14 +33,14 @@ export default async function NewslettersAdmin() {
             </tr>
           </thead>
           <tbody className="divide-y divide-border">
-            {newsletters?.length === 0 ? (
+            {newsletter_articles?.length === 0 ? (
               <tr>
                 <td colSpan={4} className="px-6 py-8 text-center text-muted-foreground">
-                  No newsletters found. Create one to get started.
+                  No newsletter_articles found. Create one to get started.
                 </td>
               </tr>
             ) : (
-              newsletters?.map((item) => (
+              newsletter_articles?.map((item) => (
                 <tr key={item.id} className="hover:bg-surface-elevated/50 transition-colors">
                   <td className="px-6 py-4 font-medium text-foreground">{item.title}</td>
                   <td className="px-6 py-4">
@@ -57,7 +57,7 @@ export default async function NewslettersAdmin() {
                   <td className="px-6 py-4 text-muted-foreground">{item.category}</td>
                   <td className="px-6 py-4 text-right space-x-2">
                     <Button variant="ghost" size="sm" asChild>
-                      <Link href={`/admin/newsletters/${item.id}`}>
+                      <Link href={`/admin/articles/${item.id}`}>
                         <Edit className="h-4 w-4" />
                       </Link>
                     </Button>

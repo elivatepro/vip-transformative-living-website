@@ -4,21 +4,22 @@ import { updateNewsletter } from '@/app/admin/actions';
 import { EditNewsletterForm } from '../edit-form';
 import type { Database } from '@/types/database';
 
-type Newsletter = Database['public']['Tables']['newsletters']['Row'];
+type Newsletter = Database['public']['Tables']['newsletter_articles']['Row'];
 
-export default async function EditNewsletterPage({ params }: { params: { id: string } }) {
+export default async function EditNewsletterPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   const supabase = await createClient();
   const { data } = await supabase
-    .from('newsletters')
+    .from('newsletter_articles')
     .select('*')
-    .eq('id', params.id)
+    .eq('id', id)
     .single();
 
   if (!data) {
     notFound();
   }
 
-  const action = updateNewsletter.bind(null, params.id);
+  const action = updateNewsletter.bind(null, id);
 
   return (
     <div className="max-w-4xl mx-auto space-y-8">

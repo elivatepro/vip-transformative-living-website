@@ -123,8 +123,8 @@ export default function EditTestimonialPage({ params }: { params: { id: string }
             Feature this testimonial
           </label>
           <label className="flex items-center gap-2 text-sm font-medium">
-            <input type="checkbox" name="is_visible" defaultChecked={initial.is_visible} className="rounded border-input bg-surface text-gold focus:ring-gold" />
-            Visible on site
+            <input type="checkbox" name="is_published" defaultChecked={initial.is_published} className="rounded border-input bg-surface text-gold focus:ring-gold" />
+            Published
           </label>
         </div>
 

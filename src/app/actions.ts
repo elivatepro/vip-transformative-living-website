@@ -1,6 +1,7 @@
 'use server';
 
 import { z } from 'zod';
+import { createClient } from '@/lib/supabase-server';
 
 const schema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -9,6 +10,76 @@ const schema = z.object({
   message: z.string().min(10, 'Message must be at least 10 characters'),
   website: z.string().optional() // Honeypot
 });
+
+const subscribeSchema = z.object({
+  email: z.string().email('Invalid email address'),
+  source: z.string().optional().default('website'),
+});
+
+export async function subscribeToNewsletter(prevState: any, formData: FormData) {
+  const data = {
+    email: formData.get('email'),
+    source: formData.get('source') || 'website',
+  };
+
+  const result = subscribeSchema.safeParse(data);
+
+  if (!result.success) {
+    const errorMsg = result.error.flatten().fieldErrors.email?.[0] || 'Invalid input';
+    return { success: false, message: errorMsg };
+  }
+
+  try {
+    const supabase = await createClient();
+
+    // Check if already subscribed
+    const { data: existing } = await supabase
+      .from('subscribers')
+      .select('id, is_active')
+      .eq('email', result.data.email)
+      .single();
+
+    if (existing) {
+      if (existing.is_active) {
+        return { success: true, message: 'You are already subscribed!' };
+      } else {
+        // Reactivate
+        const { error } = await supabase
+          .from('subscribers')
+          .update({ is_active: true, unsubscribed_at: null })
+          .eq('id', existing.id);
+        
+        if (error) {
+          console.error('Subscription reactivation error:', error);
+          return { success: false, message: 'Could not reactivate subscription.' };
+        }
+        return { success: true, message: 'Welcome back! You have been resubscribed.' };
+      }
+    }
+
+    const { error } = await supabase
+      .from('subscribers')
+      .insert({
+        email: result.data.email,
+        source: result.data.source,
+        is_active: true,
+      });
+
+    if (error) {
+      console.error('Subscription error:', error);
+      // Handle unique constraint violation if race condition occurred
+      if (error.code === '23505') { // unique_violation
+        return { success: true, message: 'You are already subscribed!' };
+      }
+      return { success: false, message: 'Something went wrong. Please try again.' };
+    }
+
+    return { success: true, message: 'Thank you for subscribing!' };
+  } catch (error) {
+    console.error('Subscription unexpected error:', error);
+    return { success: false, message: 'An unexpected error occurred. Please try again.' };
+  }
+}
 
 export async function submitContactForm(prevState: any, formData: FormData) {
   const data = {

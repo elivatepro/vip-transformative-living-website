@@ -4,13 +4,24 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { Check, Mic2, Users, Lightbulb } from "lucide-react";
+import { createClient } from "@/lib/supabase-server";
 
 export const metadata = {
   title: "Speaking Services | VIP Transformative Living",
   description: "Keynote speaking by Wayne Dawson. Signature talks on Leadership, Fatherhood, and Transformation.",
 };
 
-export default function SpeakingPage() {
+export default async function SpeakingPage() {
+  const supabase = await createClient();
+  
+  const [topicsResult, testimonialsResult] = await Promise.all([
+    supabase.from('speaking_topics').select('*').eq('is_published', true).order('display_order'),
+    supabase.from('testimonials').select('*').eq('is_published', true).eq('category', 'speaking').order('display_order')
+  ]);
+
+  const topics = topicsResult.data || [];
+  const testimonials = testimonialsResult.data || [];
+
   return (
     <div className="pt-20 font-sans">
       
@@ -94,49 +105,39 @@ export default function SpeakingPage() {
         </div>
 
         <div className="space-y-12 max-w-5xl mx-auto">
-          {/* Talk 1 */}
-          <Card className="bg-surface border border-gold/30 overflow-hidden">
-            <div className="grid md:grid-cols-3">
-              <div className="bg-gold/5 p-8 flex flex-col justify-center border-r border-gold/10">
-                <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2">Corporate & Leadership</span>
-                <h3 className="text-2xl font-serif font-bold text-white">Leadership by VIP</h3>
-              </div>
-              <div className="p-8 md:col-span-2 space-y-4">
-                <p className="text-muted-foreground leading-relaxed">
-                  The best leaders don't just manage — they lead from alignment. 
-                  This keynote introduces the VIP Framework as a leadership philosophy, 
-                  helping executives lead from authenticity rather than just authority.
-                </p>
-                <div className="pt-4 flex flex-wrap gap-4 text-sm text-white/80">
-                  <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Authentic Leadership</span>
-                  <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Organizational Culture</span>
-                  <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Decision Making</span>
+          {topics.map((topic, i) => (
+            <Card key={topic.id} className="bg-surface border border-gold/30 overflow-hidden">
+              <div className="grid md:grid-cols-3">
+                <div className="bg-gold/5 p-8 flex flex-col justify-center border-r border-gold/10">
+                  <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2">{topic.audience_type}</span>
+                  <h3 className="text-2xl font-serif font-bold text-white">{topic.title}</h3>
+                </div>
+                <div className="p-8 md:col-span-2 space-y-4">
+                  <p className="text-muted-foreground leading-relaxed">
+                    {topic.description}
+                  </p>
+                  {/* Dynamic tags if available, currently hardcoded based on seed data implicit structure, or we can parse JSON if we added tags column */}
+                  <div className="pt-4 flex flex-wrap gap-4 text-sm text-white/80">
+                    {/* Placeholder tags based on topic - ideal world we add tags column to DB */}
+                    {topic.slug === 'leadership-by-vip' && (
+                        <>
+                            <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Authentic Leadership</span>
+                            <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Organizational Culture</span>
+                            <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Decision Making</span>
+                        </>
+                    )}
+                    {topic.slug === 'dear-father' && (
+                        <>
+                            <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Fatherhood</span>
+                            <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Identity Shift</span>
+                            <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Legacy</span>
+                        </>
+                    )}
+                  </div>
                 </div>
               </div>
-            </div>
-          </Card>
-
-          {/* Talk 2 */}
-          <Card className="bg-surface border border-gold/30 overflow-hidden">
-            <div className="grid md:grid-cols-3">
-              <div className="bg-gold/5 p-8 flex flex-col justify-center border-r border-gold/10">
-                <span className="text-xs font-bold uppercase tracking-widest text-gold mb-2">Community & Men</span>
-                <h3 className="text-2xl font-serif font-bold text-white">Dear Father, From MVP to VIP</h3>
-              </div>
-              <div className="p-8 md:col-span-2 space-y-4">
-                <p className="text-muted-foreground leading-relaxed">
-                  A powerful message about the cost of performance-based identity. 
-                  Wayne invites men on a journey from being the "Most Valuable Player" 
-                  to becoming a "Very Important Person" to those who matter most.
-                </p>
-                <div className="pt-4 flex flex-wrap gap-4 text-sm text-white/80">
-                  <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Fatherhood</span>
-                  <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Identity Shift</span>
-                  <span className="bg-surface-elevated px-3 py-1 rounded-full border border-border">Legacy</span>
-                </div>
-              </div>
-            </div>
-          </Card>
+            </Card>
+          ))}
 
           {/* Talk 3 - Custom */}
           <div className="text-center bg-surface-elevated/50 p-8 rounded-xl border border-dashed border-border">
@@ -154,30 +155,23 @@ export default function SpeakingPage() {
       </Section>
 
       {/* 4. TESTIMONIALS */}
-      <Section variant="alternate">
-        <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
-          <blockquote className="bg-surface p-8 rounded-xl border border-border shadow-sm">
-            <p className="text-muted-foreground mb-6 italic">
-              "Wayne's keynote was the highlight of our leadership retreat. 
-              Three months later, our executives are still referencing the VIP Framework."
-            </p>
-            <footer>
-              <cite className="not-italic font-bold text-white block">— Sarah M.</cite>
-              <span className="text-sm text-gold">Chief People Officer</span>
-            </footer>
-          </blockquote>
-          <blockquote className="bg-surface p-8 rounded-xl border border-border shadow-sm">
-            <p className="text-muted-foreground mb-6 italic">
-              "We've hired dozens of speakers over the years. Wayne is the first one 
-              whose talk led to actual behavior change in our organization."
-            </p>
-            <footer>
-              <cite className="not-italic font-bold text-white block">— Robert T.</cite>
-              <span className="text-sm text-gold">Conference Director</span>
-            </footer>
-          </blockquote>
-        </div>
-      </Section>
+      {testimonials.length > 0 && (
+        <Section variant="alternate">
+            <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+            {testimonials.map((t) => (
+                <blockquote key={t.id} className="bg-surface p-8 rounded-xl border border-border shadow-sm">
+                    <p className="text-muted-foreground mb-6 italic">
+                    "{t.quote}"
+                    </p>
+                    <footer>
+                    <cite className="not-italic font-bold text-white block">— {t.client_name}</cite>
+                    {t.client_title && <span className="text-sm text-gold">{t.client_title}</span>}
+                    </footer>
+                </blockquote>
+            ))}
+            </div>
+        </Section>
+      )}
 
       {/* 5. BOOKING */}
       <Section>

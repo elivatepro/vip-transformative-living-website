@@ -1,5 +1,3 @@
-'use client';
-
 import React from 'react';
 import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
@@ -7,6 +5,7 @@ import {
   Check, 
   CheckCircle2, 
   ArrowRight, 
+  ArrowDown,
   ChevronRight, 
   Play, 
   Users, 
@@ -14,7 +13,6 @@ import {
   ShieldCheck, 
   Clock, 
   Gem,
-  ArrowDown,
   XCircle
 } from "lucide-react";
 import { BookCallButton } from "@/components/book-call-button";
@@ -27,8 +25,30 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { VipFramework } from "@/components/coaching/vip-framework";
+import { createClient } from "@/lib/supabase-server";
 
-export default function CoachingPage() {
+export const metadata = {
+  title: "1-on-1 Coaching | VIP Transformative Living",
+  description: "Personalized coaching for men at a crossroads. Rediscover your purpose and build a life of alignment.",
+};
+
+export default async function CoachingPage() {
+  const supabase = await createClient();
+  
+  const [testimonialsResult, faqsResult, packagesResult] = await Promise.all([
+    supabase.from('testimonials').select('*').eq('is_published', true).eq('display_on_coaching', true).order('display_order'),
+    supabase.from('faqs').select('*').eq('is_published', true).eq('show_on_coaching', true).order('display_order'),
+    supabase.from('coaching_packages').select('*').eq('is_published', true).order('display_order')
+  ]);
+
+  const testimonials = testimonialsResult.data || [];
+  const faqs = faqsResult.data || [];
+  const packages = packagesResult.data || [];
+
+  // Categorize testimonials
+  const featuredTestimonial = testimonials.find(t => t.is_featured);
+  const gridTestimonials = testimonials.filter(t => !t.is_featured);
+
   return (
     <div className="pt-20 font-sans bg-[#0A0A0A] text-[#F5F5F5]">
       
@@ -460,55 +480,61 @@ export default function CoachingPage() {
 
           <div className="max-w-[1280px] mx-auto space-y-20">
             {/* Featured Testimonial */}
-            <div className="grid lg:grid-cols-2 gap-12 items-center bg-[#1F1F1F] p-8 md:p-12 rounded-[2.5rem] border border-[#2A2A2A] shadow-xl">
-              <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl group cursor-pointer">
-                <Image 
-                  src="/images/sunrise-mountains.jpg" 
-                  alt="Testimonial Thumbnail" 
-                  fill 
-                  className="object-cover group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
-                  <div className="w-20 h-20 rounded-full bg-[#D4AF37] flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
-                    <Play className="w-8 h-8 text-black fill-current translate-x-1" />
+            {featuredTestimonial && (
+              <div className="grid lg:grid-cols-2 gap-12 items-center bg-[#1F1F1F] p-8 md:p-12 rounded-[2.5rem] border border-[#2A2A2A] shadow-xl">
+                <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl group cursor-pointer">
+                  <Image 
+                    src={featuredTestimonial.video_thumbnail_url || "/images/sunrise-mountains.jpg"} 
+                    alt="Testimonial Thumbnail" 
+                    fill 
+                    className="object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                    <div className="w-20 h-20 rounded-full bg-[#D4AF37] flex items-center justify-center shadow-xl group-hover:scale-110 transition-transform">
+                      <Play className="w-8 h-8 text-black fill-current translate-x-1" />
+                    </div>
+                  </div>
+                </div>
+                <div className="space-y-6">
+                  <div className="text-[#D4AF37] text-2xl">⭐⭐⭐⭐⭐</div>
+                  <blockquote className="text-[#F5F5F5] text-[20px] md:text-[24px] font-serif italic leading-relaxed">
+                    &quot;{featuredTestimonial.quote}&quot;
+                  </blockquote>
+                  <div>
+                    <p className="text-[#F5F5F5] font-bold text-[18px]">{featuredTestimonial.client_name}</p>
+                    {featuredTestimonial.client_title && (
+                      <p className="text-[#D4AF37] text-[14px] tracking-widest uppercase font-bold">
+                        {featuredTestimonial.client_title}{featuredTestimonial.client_location ? `, ${featuredTestimonial.client_location}` : ''}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
-              <div className="space-y-6">
-                <div className="text-[#D4AF37] text-2xl">⭐⭐⭐⭐⭐</div>
-                <blockquote className="text-[#F5F5F5] text-[20px] md:text-[24px] font-serif italic leading-relaxed">
-                  &quot;Wayne didn&apos;t let me hide behind my stories. Six months later, I&apos;m a different man. Not because he told me who to be, but because he helped me remember who I already was.&quot;
-                </blockquote>
-                <div>
-                  <p className="text-[#F5F5F5] font-bold text-[18px]">JAMES K.</p>
-                  <p className="text-[#D4AF37] text-[14px] tracking-widest uppercase font-bold">Business Owner, Chicago</p>
-                </div>
-              </div>
-            </div>
+            )}
 
             {/* Testimonial Grid */}
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {[
-                { name: "MARCUS T.", role: "Former VP of Operations", text: "Wayne helped me see that I wasn't stuck—I was misaligned. My values had evolved but my life hadn't. Once I got clear, the path became obvious." },
-                { name: "DAVID R.", role: "Entrepreneur", text: "Wayne doesn't tell you what to do—he helps you figure out who you are. The identity work we did gave me clarity I've never had before." },
-                { name: "MICHAEL D.", role: "Financial Advisor", text: "Even before I signed up, Wayne gave me more insight in 30 minutes than I'd gotten from months of trying to figure things out alone." }
-              ].map((item, i) => (
-                <div key={i} className="bg-[#141414] border border-[#2A2A2A] p-8 rounded-2xl flex flex-col justify-between group hover:border-[#D4AF37] transition-all">
-                  <div className="space-y-6">
-                    <div className="relative aspect-video rounded-xl overflow-hidden mb-6 bg-black">
-                       <div className="absolute inset-0 flex items-center justify-center">
-                         <Play className="w-10 h-10 text-[#D4AF37] opacity-80" />
-                       </div>
+            {gridTestimonials.length > 0 && (
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {gridTestimonials.map((item) => (
+                  <div key={item.id} className="bg-[#141414] border border-[#2A2A2A] p-8 rounded-2xl flex flex-col justify-between group hover:border-[#D4AF37] transition-all">
+                    <div className="space-y-6">
+                      <div className="relative aspect-video rounded-xl overflow-hidden mb-6 bg-black">
+                         <div className="absolute inset-0 flex items-center justify-center">
+                           <Play className="w-10 h-10 text-[#D4AF37] opacity-80" />
+                         </div>
+                      </div>
+                      <p className="text-[#9CA3AF] text-[14px] leading-relaxed">&quot;{item.quote}&quot;</p>
                     </div>
-                    <p className="text-[#9CA3AF] text-[14px] leading-relaxed">&quot;{item.text}&quot;</p>
+                    <div className="mt-8 pt-6 border-t border-[#2A2A2A]">
+                      <p className="text-[#F5F5F5] font-bold text-[14px]">{item.client_name}</p>
+                      {item.client_title && (
+                        <p className="text-[#D4AF37] text-[10px] font-bold tracking-widest uppercase">{item.client_title}</p>
+                      )}
+                    </div>
                   </div>
-                  <div className="mt-8 pt-6 border-t border-[#2A2A2A]">
-                    <p className="text-[#F5F5F5] font-bold text-[14px]">{item.name}</p>
-                    <p className="text-[#D4AF37] text-[10px] font-bold tracking-widest uppercase">{item.role}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            )}
           </div>
         </div>
       </Section>
@@ -529,99 +555,76 @@ export default function CoachingPage() {
           </div>
 
           <div className="grid lg:grid-cols-3 gap-8 items-stretch max-w-[1280px] mx-auto">
-            {/* SILVER */}
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-2xl p-8 flex flex-col hover:border-[#D4AF37] transition-all">
-              <div className="mb-6">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#6B7280] border border-[#2A2A2A] px-2.5 py-1 rounded">Silver Tier</span>
-              </div>
-              {/* H3 */}
-              <h3 className="text-[22px] md:text-[24px] font-serif font-bold text-[#F5F5F5] mb-2">Rapid Relief</h3>
-              <p className="text-[14px] font-bold text-[#D4AF37] mb-8 uppercase tracking-wide">When you need clarity NOW.</p>
+            {packages.map((pkg) => {
+              const features = typeof pkg.features === 'string' ? JSON.parse(pkg.features) : pkg.features || [];
+              const isFeatured = pkg.is_featured;
               
-              <div className="mb-10 pb-10 border-b border-[#2A2A2A]">
-                <p className="text-[14px] text-[#9CA3AF] leading-relaxed">
-                  For men facing an immediate challenge who need fast, focused support to navigate through using the S.C.O.R.E. method.
-                </p>
-              </div>
+              return (
+                <div 
+                  key={pkg.id} 
+                  className={`
+                    flex flex-col p-8 rounded-2xl transition-all relative
+                    ${isFeatured ? 'bg-[#1F1F1F] border-2 border-[#D4AF37] shadow-2xl transform lg:-translate-y-6' : 'bg-[#141414] border border-[#2A2A2A] hover:border-[#D4AF37]'}
+                  `}
+                >
+                  {isFeatured && (
+                    <div className="absolute top-0 right-0 bg-[#D4AF37] text-black text-[10px] font-bold px-4 py-1 rounded-bl-xl rounded-tr-xl">
+                      {pkg.badge_text || 'MOST POPULAR'}
+                    </div>
+                  )}
+                  
+                  <div className="mb-6">
+                    <span className={`text-[10px] font-bold uppercase tracking-widest px-2.5 py-1 rounded border ${isFeatured ? 'text-[#D4AF37] border-[#D4AF37]' : 'text-[#6B7280] border-[#2A2A2A]'}`}>
+                      {pkg.name}
+                    </span>
+                  </div>
+                  
+                  {/* H3 */}
+                  <h3 className="text-[22px] md:text-[24px] font-serif font-bold text-[#F5F5F5] mb-2">{pkg.tagline}</h3>
+                  <p className="text-[14px] font-bold text-[#D4AF37] mb-8 uppercase tracking-wide">
+                    {pkg.slug === 'silver' ? 'When you need clarity NOW.' : 
+                     pkg.slug === 'gold' ? 'Find work that fits who you\'ve become.' : 'The full journey.'}
+                  </p>
+                  
+                  <div className="mb-10 pb-10 border-b border-[#2A2A2A]">
+                    <p className="text-[14px] text-[#9CA3AF] leading-relaxed">
+                      {pkg.description}
+                    </p>
+                  </div>
 
-              <ul className="space-y-4 mb-10 flex-grow">
-                {["Up to 4 sessions (60 min)", "S.C.O.R.E. Rapid Assessment", "Immediate Action Plan", "Email support", "Bonus: 'Breaking Free' E-book"].map((feat, i) => (
-                  <li key={i} className="flex gap-3 text-[12px] text-[#9CA3AF]">
-                    <Check className="w-4 h-4 text-[#D4AF37] shrink-0" /> {feat}
-                  </li>
-                ))}
-              </ul>
+                  <ul className="space-y-4 mb-10 flex-grow">
+                    {features.map((feat: string, i: number) => (
+                      <li key={i} className="flex gap-3 text-[12px] text-[#9CA3AF]">
+                        <Check className="w-4 h-4 text-[#D4AF37] shrink-0" /> {feat}
+                      </li>
+                    ))}
+                  </ul>
 
-              <div className="mb-8">
-                <p className="text-3xl font-bold text-[#F5F5F5]">$200 <span className="text-sm text-[#6B7280] font-normal">/ session</span></p>
-                <p className="text-[10px] text-[#D4AF37] font-bold mt-1 tracking-widest uppercase">Fast Action: $150/session*</p>
-              </div>
+                  <div className="mb-8">
+                    {pkg.price_per_session ? (
+                      <p className="text-3xl font-bold text-[#F5F5F5]">${pkg.price_per_session} <span className="text-sm text-[#6B7280] font-normal">/ session</span></p>
+                    ) : (
+                      <p className="text-3xl font-bold text-[#F5F5F5]">${pkg.total_price.toLocaleString()} <span className="text-sm text-[#6B7280] font-normal">total</span></p>
+                    )}
+                    
+                    {pkg.fast_action_price && (
+                      <p className="text-[10px] text-[#D4AF37] font-bold mt-1 tracking-widest uppercase">
+                        Fast Action: ${pkg.fast_action_price.toLocaleString()}
+                        {pkg.price_per_session ? '/session' : '*'}
+                        {pkg.slug !== 'silver' && ' | Payment Plans'}
+                      </p>
+                    )}
+                  </div>
 
-              <BookCallButton variant="secondary" className="w-full h-14 border-[#2A2A2A] hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors">Book Discovery Call</BookCallButton>
-            </div>
-
-            {/* GOLD */}
-            <div className="bg-[#1F1F1F] border-2 border-[#D4AF37] rounded-2xl p-8 flex flex-col relative transform lg:-translate-y-6 shadow-2xl">
-              <div className="absolute top-0 right-0 bg-[#D4AF37] text-black text-[10px] font-bold px-4 py-1 rounded-bl-xl rounded-tr-xl">MOST POPULAR</div>
-              <div className="mb-6">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#D4AF37] border border-[#D4AF37] px-2.5 py-1 rounded">Gold Tier</span>
-              </div>
-              {/* H3 */}
-              <h3 className="text-[22px] md:text-[24px] font-serif font-bold text-[#F5F5F5] mb-2">Career Breakthrough</h3>
-              <p className="text-[14px] font-bold text-[#D4AF37] mb-8 uppercase tracking-wide">Find work that fits who you&apos;ve become.</p>
-              
-              <div className="mb-10 pb-10 border-b border-[#2A2A2A]">
-                <p className="text-[14px] text-[#9CA3AF] leading-relaxed">
-                  8-week intensive designed to help you find your Zone of Genius and make moves that align with your evolved values.
-                </p>
-              </div>
-
-              <ul className="space-y-4 mb-10 flex-grow">
-                {["8 Weekly Sessions (60 min)", "VIP Career Assessment", "Zone of Genius ID", "Impact Statement Creation", "Priority Email Support", "Bonus: 'Five Years to Freedom'"].map((feat, i) => (
-                  <li key={i} className="flex gap-3 text-[12px] text-[#9CA3AF]">
-                    <Check className="w-4 h-4 text-[#D4AF37] shrink-0" /> {feat}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mb-8">
-                <p className="text-3xl font-bold text-[#F5F5F5]">$2,400 <span className="text-sm text-[#6B7280] font-normal">total</span></p>
-                <p className="text-[10px] text-[#D4AF37] font-bold mt-1 tracking-widest uppercase">Fast Action: $2,200* | Payment Plans</p>
-              </div>
-
-              <BookCallButton variant="primary" className="w-full h-14 shadow-[0_0_20px_rgba(212,175,55,0.4)]">Book Discovery Call</BookCallButton>
-            </div>
-
-            {/* PLATINUM */}
-            <div className="bg-[#141414] border border-[#2A2A2A] rounded-2xl p-8 flex flex-col hover:border-[#D4AF37] transition-all">
-              <div className="mb-6">
-                <span className="text-[10px] font-bold uppercase tracking-widest text-[#F5F5F5] border border-[#F5F5F5] px-2.5 py-1 rounded">Platinum Tier</span>
-              </div>
-              {/* H3 */}
-              <h3 className="text-[22px] md:text-[24px] font-serif font-bold text-[#F5F5F5] mb-2">Complete Transformation</h3>
-              <p className="text-[14px] font-bold text-[#D4AF37] mb-8 uppercase tracking-wide">The full journey.</p>
-              
-              <div className="mb-10 pb-10 border-b border-[#2A2A2A]">
-                <p className="text-[14px] text-[#9CA3AF] leading-relaxed">
-                  12-week comprehensive journey that addresses career, relationships, identity, and purpose. Permanent change.
-                </p>
-              </div>
-
-              <ul className="space-y-4 mb-10 flex-grow">
-                {["12 Weekly Sessions (60 min)", "Full VIP Transformation Process", "Identity Reconstruction", "Limiting Belief Removal", "Priority Email Access", "Bonus: 3 E-books + Training"].map((feat, i) => (
-                  <li key={i} className="flex gap-3 text-[12px] text-[#9CA3AF]">
-                    <Check className="w-4 h-4 text-[#D4AF37] shrink-0" /> {feat}
-                  </li>
-                ))}
-              </ul>
-
-              <div className="mb-8">
-                <p className="text-3xl font-bold text-[#F5F5F5]">$3,600 <span className="text-sm text-[#6B7280] font-normal">total</span></p>
-                <p className="text-[10px] text-[#D4AF37] font-bold mt-1 tracking-widest uppercase">Fast Action: $3,300* | Payment Plans</p>
-              </div>
-
-              <BookCallButton variant="secondary" className="w-full h-14 border-[#2A2A2A] hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors">Book Discovery Call</BookCallButton>
-            </div>
+                  <BookCallButton 
+                    variant={isFeatured ? "primary" : "secondary"} 
+                    className={`w-full h-14 ${!isFeatured && 'border-[#2A2A2A] hover:border-[#D4AF37] hover:text-[#D4AF37] transition-colors'} ${isFeatured && 'shadow-[0_0_20px_rgba(212,175,55,0.4)]'}`}
+                  >
+                    Book Discovery Call
+                  </BookCallButton>
+                </div>
+              );
+            })}
           </div>
 
           <div className="mt-20 max-w-2xl mx-auto text-center">
@@ -644,33 +647,12 @@ export default function CoachingPage() {
             </div>
 
             <Accordion type="single" collapsible className="space-y-4">
-              {[
-                { 
-                  q: "How is this different from therapy?", 
-                  a: "Therapy typically focuses on healing past trauma and addressing mental health conditions. Coaching focuses on moving forward—creating clarity, setting goals, and building the life you want. If you're dealing with clinical depression or trauma, I'd encourage therapy (and I can help you find a great one)." 
-                },
-                { 
-                  q: "I've tried coaching before and it didn't work. Why is this different?", 
-                  a: "Most coaching is just 'expensive friendship' with no framework or accountability. I use the proven VIP Framework and I'm direct—I'll challenge your stories and excuses with compassion. If you're ready for deep work, this will be fundamentally different." 
-                },
-                { 
-                  q: "How do sessions work?", 
-                  a: "Sessions are 60 minutes via Zoom or phone. We follow a clear structure: check-in, core transformation work (VIP), and integration/action items. You also have email access between sessions for support." 
-                },
-                { 
-                  q: "Why does coaching cost this much?", 
-                  a: "The cost of staying stuck is far greater. What's it costing you right now to feel unfulfilled or misaligned? Most clients find that the career moves or relationship shifts they achieve within 90 days far exceed their investment." 
-                },
-                { 
-                  q: "What if I'm not 'stuck enough' to need coaching?", 
-                  a: "You don't need to be in crisis. Some of my best work is with high-performers who want to go from 'good' to 'great.' If you have a sense that there's more for you, that's reason enough to talk." 
-                }
-              ].map((item, i) => (
-                <AccordionItem key={i} value={`item-${i}`} className="bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl px-6">
+              {faqs.map((item, i) => (
+                <AccordionItem key={item.id} value={`item-${i}`} className="bg-[#1F1F1F] border border-[#2A2A2A] rounded-xl px-6">
                   {/* H4 approx */}
-                  <AccordionTrigger className="text-[#F5F5F5] hover:text-[#D4AF37] text-left font-bold text-[18px] py-6 hover:no-underline">{item.q}</AccordionTrigger>
+                  <AccordionTrigger className="text-[#F5F5F5] hover:text-[#D4AF37] text-left font-bold text-[18px] py-6 hover:no-underline">{item.question}</AccordionTrigger>
                   <AccordionContent className="text-[#9CA3AF] leading-relaxed pb-6 text-[16px]">
-                    {item.a}
+                    {item.answer}
                   </AccordionContent>
                 </AccordionItem>
               ))}

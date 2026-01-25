@@ -3,7 +3,7 @@ import { createClient } from '@/lib/supabase-server';
 export async function getNewsletters() {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from('newsletters')
+    .from('newsletter_articles')
     .select('*')
     .eq('is_published', true)
     .order('published_at', { ascending: false });
@@ -19,7 +19,7 @@ export async function getNewsletters() {
 export async function getNewsletterBySlug(slug: string) {
   const supabase = await createClient();
   const { data, error } = await supabase
-    .from('newsletters')
+    .from('newsletter_articles')
     .select('*')
     .eq('slug', slug)
     .single();
@@ -33,7 +33,7 @@ export async function getTestimonials() {
   const { data, error } = await supabase
     .from('testimonials')
     .select('*')
-    .eq('is_visible', true)
+    .eq('is_published', true)
     .order('display_order', { ascending: true });
     
   if (error) return [];

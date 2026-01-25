@@ -1,30 +1,11 @@
 import { Section } from "@/components/ui/section";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { getNewsletters } from "@/lib/api";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Check, FileText, MonitorPlay } from "lucide-react";
-
-// Mock data if DB is empty
-const MOCK_NEWSLETTERS = [
-  {
-    id: '1',
-    title: 'The Midlife Myth: Why You Aren’t Done Yet',
-    excerpt: 'Society tells us midlife is a crisis. I call it a chrysalis. Here is why your best years are actually ahead of you.',
-    slug: 'midlife-myth',
-    category: 'Purpose',
-    published_at: '2025-12-15T10:00:00Z',
-  },
-  {
-    id: '2',
-    title: 'Silent Struggles: Men and Vulnerability',
-    excerpt: 'Why opening up doesn’t make you weak, and how to find safe spaces to process the weight you carry.',
-    slug: 'silent-struggles',
-    category: 'Health',
-    published_at: '2025-11-20T10:00:00Z',
-  }
-];
+import { createClient } from "@/lib/supabase-server";
+import { NewsletterForm } from "@/components/newsletter-form";
 
 export const metadata = {
   title: "Resources & Newsletter | VIP Transformative Living",
@@ -32,10 +13,14 @@ export const metadata = {
 };
 
 export default async function ResourcesPage() {
-  let newsletters = await getNewsletters();
-  if (!newsletters || newsletters.length === 0) {
-    newsletters = MOCK_NEWSLETTERS as any;
-  }
+  const supabase = await createClient();
+  const { data: newslettersResult } = await supabase
+    .from('newsletter_articles')
+    .select('*')
+    .eq('is_published', true)
+    .order('published_at', { ascending: false });
+
+  const newsletters = newslettersResult || [];
 
   return (
     <div className="pt-20 font-sans overflow-x-hidden">
@@ -198,10 +183,13 @@ export default async function ResourcesPage() {
 
         <div className="flex justify-center mb-10 md:mb-16">
           <div className="w-full max-w-md bg-surface p-5 md:p-6 rounded-xl border border-border">
-            <form className="flex flex-col gap-3 md:gap-4">
-              <input type="email" placeholder="Your email address" className="w-full bg-background border border-border rounded-md px-4 py-3 focus:border-gold focus:outline-none transition-colors" />
-              <Button className="w-full">Subscribe Free</Button>
-            </form>
+            <NewsletterForm 
+                source="resources_page" 
+                layout="column" 
+                buttonLabel="Subscribe Free" 
+                buttonVariant="default"
+                className="gap-3 md:gap-4"
+            />
             <p className="text-xs text-center text-muted-foreground mt-3 md:mt-4">No spam. Unsubscribe anytime.</p>
           </div>
         </div>

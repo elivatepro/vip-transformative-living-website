@@ -2,7 +2,7 @@ import { createClient } from '@/lib/supabase-server';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Link from 'next/link';
-import { Plus, Trash2, Star, Eye, EyeOff } from 'lucide-react';
+import { Plus, Trash2, Star, Eye, EyeOff, Edit } from 'lucide-react';
 import { deleteTestimonial } from '@/app/admin/actions';
 
 export default async function TestimonialsAdmin() {
@@ -37,7 +37,7 @@ export default async function TestimonialsAdmin() {
               <tr>
                 <th className="px-6 py-3 text-left">Client</th>
                 <th className="px-6 py-3 text-left">Featured</th>
-                <th className="px-6 py-3 text-left">Visibility</th>
+                <th className="px-6 py-3 text-left">Status</th>
                 <th className="px-6 py-3 text-left">Order</th>
                 <th className="px-6 py-3 text-right">Actions</th>
               </tr>
@@ -60,14 +60,19 @@ export default async function TestimonialsAdmin() {
                       )}
                     </td>
                     <td className="px-6 py-4">
-                      {item.is_visible ? (
-                        <span className="inline-flex items-center gap-1 text-xs text-green-400"><Eye className="h-3 w-3" /> Visible</span>
+                      {item.is_published ? (
+                        <span className="inline-flex items-center gap-1 text-xs text-green-400"><Eye className="h-3 w-3" /> Published</span>
                       ) : (
-                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground"><EyeOff className="h-3 w-3" /> Hidden</span>
+                        <span className="inline-flex items-center gap-1 text-xs text-muted-foreground"><EyeOff className="h-3 w-3" /> Draft</span>
                       )}
                     </td>
                     <td className="px-6 py-4 text-muted-foreground">{item.display_order ?? 0}</td>
                     <td className="px-6 py-4 text-right space-x-2">
+                      <Button variant="ghost" size="sm" asChild>
+                        <Link href={`/admin/testimonials/${item.id}`}>
+                          <Edit className="h-4 w-4" />
+                        </Link>
+                      </Button>
                       <form
                         action={async () => {
                           'use server';

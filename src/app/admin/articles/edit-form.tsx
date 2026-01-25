@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import type { Database } from '@/types/database';
 
-type Newsletter = Database['public']['Tables']['newsletters']['Row'];
+type Newsletter = Database['public']['Tables']['newsletter_articles']['Row'];
 
 function SubmitButton() {
   const { pending } = useFormStatus();
