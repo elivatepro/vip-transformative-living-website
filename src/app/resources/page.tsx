@@ -46,7 +46,7 @@ export default async function ResourcesPage() {
         <div 
           className="absolute inset-0 z-0"
           style={{ 
-            backgroundImage: "url('/images/Beautiful Sunrise Vysoké Tatry.jpg')",
+            backgroundImage: "url('/images/beautiful-sunrise-tatry.jpg')",
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}
