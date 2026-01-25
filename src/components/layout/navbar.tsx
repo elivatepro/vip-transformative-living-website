@@ -19,7 +19,7 @@ const navLinks = [
   { name: 'Contact', href: '/contact', icon: Phone },
 ];
 
-export function Navbar() {
+export function Navbar({ onNavigate }: { onNavigate?: () => void }) {
   const [isScrolled, setIsScrolled] = React.useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = React.useState(false);
   const { scrollY } = useScroll();
@@ -32,6 +32,13 @@ export function Navbar() {
       setIsScrolled(false);
     }
   });
+
+  const handleLinkClick = (href: string) => {
+    if (href !== pathname && onNavigate) {
+      onNavigate();
+    }
+    // Mobile menu closing is handled by the useEffect on pathname change
+  };
 
   // Close mobile menu on route change
   React.useEffect(() => {
@@ -60,7 +67,11 @@ export function Navbar() {
     >
       <div className="container mx-auto px-4 md:px-6 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="z-50 relative flex items-center">
+        <Link 
+          href="/" 
+          className="z-50 relative flex items-center"
+          onClick={() => handleLinkClick('/')}
+        >
           <Image 
             src="/images/Gold Texture Logo.png" 
             alt="VIP Transformative Living" 
@@ -79,6 +90,7 @@ export function Navbar() {
               <Link
                 key={link.href}
                 href={link.href}
+                onClick={() => handleLinkClick(link.href)}
                 className={cn(
                   'text-base font-medium transition-colors hover:text-gold relative group drop-shadow-md',
                   isActive ? 'text-gold' : 'text-white hover:text-gold/80'
@@ -140,6 +152,7 @@ export function Navbar() {
                   >
                     <Link
                       href={link.href}
+                      onClick={() => handleLinkClick(link.href)}
                       className={cn(
                         'flex items-center gap-4 p-4 rounded-xl transition-all duration-200 group',
                         isActive 

@@ -15,7 +15,7 @@ export default function SpeakingPage() {
     <div className="pt-20 font-sans">
       
       {/* 1. HERO */}
-      <Section className="text-center space-y-6 relative overflow-hidden py-32">
+      <Section className="text-center relative overflow-hidden py-32">
         {/* Background Image with Overlay */}
         <div 
           className="absolute inset-0 z-0"
@@ -30,15 +30,15 @@ export default function SpeakingPage() {
         </div>
         
         <div className="relative z-10">
-          <span className="text-gold uppercase tracking-[0.2em] text-sm font-bold">Keynote Speaking</span>
-          <h1 className="text-5xl md:text-7xl font-serif font-bold text-foreground">
+          <span className="text-gold uppercase tracking-[0.2em] text-sm font-bold block mb-6">Keynote Speaking</span>
+          <h1 className="text-5xl md:text-7xl font-serif font-bold text-foreground mb-8">
             Inspire Your Audience. <br /> Transform Your Event.
           </h1>
-          <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+          <p className="text-xl text-muted-foreground max-w-2xl mx-auto mb-8">
             Powerful, practical, unforgettable keynotes that challenge 
             audiences to step into their greatness.
           </p>
-          <div className="pt-6">
+          <div className="pt-2">
             <Button size="lg" variant="primary" asChild>
               <Link href="/contact">Book Wayne for Your Event</Link>
             </Button>

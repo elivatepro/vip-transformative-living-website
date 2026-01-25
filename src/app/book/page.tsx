@@ -5,8 +5,8 @@ import { Section } from "@/components/ui/section";
 export default function BookingPage() {
   return (
     <div className="pt-20">
-      <Section className="text-center space-y-6">
-        <h1 className="text-5xl md:text-7xl font-serif font-bold">Book a Discovery Call</h1>
+      <Section className="text-center">
+        <h1 className="text-5xl md:text-7xl font-serif font-bold mb-8">Book a Discovery Call</h1>
         <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
           Schedule your free 30-minute consultation with Coach Wayne to explore if VIP Coaching is right for you.
         </p>
