@@ -3,8 +3,7 @@
 import { z } from 'zod';
 
 const schema = z.object({
-  firstName: z.string().min(1, 'First name is required'),
-  lastName: z.string().min(1, 'Last name is required'),
+  name: z.string().min(1, 'Name is required'),
   email: z.string().email('Invalid email address'),
   phone: z.string().optional(),
   message: z.string().min(10, 'Message must be at least 10 characters'),
@@ -13,8 +12,7 @@ const schema = z.object({
 
 export async function submitContactForm(prevState: any, formData: FormData) {
   const data = {
-    firstName: formData.get('firstName'),
-    lastName: formData.get('lastName'),
+    name: formData.get('name'),
     email: formData.get('email'),
     phone: formData.get('phone'),
     message: formData.get('message'),
@@ -33,13 +31,23 @@ export async function submitContactForm(prevState: any, formData: FormData) {
   }
 
   try {
+    // Split name for CRM compatibility
+    const fullName = result.data.name;
+    const nameParts = fullName.trim().split(/\s+/);
+    const firstName = nameParts[0];
+    const lastName = nameParts.slice(1).join(' ') || '';
+
     // Send to GHL Webhook
     if (process.env.GHL_WEBHOOK_URL) {
       await fetch(process.env.GHL_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          ...result.data,
+          firstName,
+          lastName,
+          email: result.data.email,
+          phone: result.data.phone,
+          message: result.data.message,
           source: 'website_contact_form',
           tags: ['website_lead']
         })

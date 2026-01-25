@@ -89,24 +89,10 @@ export default function ContactPage() {
             ) : (
               <form action={formAction} className="space-y-4 flex-grow flex flex-col justify-between">
                 <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input name="firstName" placeholder="First Name" required className="bg-background" />
-                    <Input name="lastName" placeholder="Last Name" required className="bg-background" />
-                  </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <Input name="email" type="email" placeholder="Email Address" required className="bg-background" />
-                    <Input name="phone" type="tel" placeholder="Phone Number" className="bg-background" />
-                  </div>
-                  <select 
-                    name="subject" 
-                    className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm text-muted-foreground focus:outline-none focus:ring-1 focus:ring-gold"
-                    defaultValue=""
-                  >
-                    <option value="" disabled>Select Subject...</option>
-                    <option value="Coaching Inquiry">Coaching Inquiry</option>
-                    <option value="Speaking Request">Speaking Request</option>
-                    <option value="General Question">General Question</option>
-                  </select>
+                  <Input name="name" placeholder="Full Name" required className="bg-background w-full" />
+                  <Input name="email" type="email" placeholder="Email Address" required className="bg-background w-full" />
+                  <Input name="phone" type="tel" placeholder="Phone Number" className="bg-background w-full" />
+                  
                   <textarea 
                     name="message" 
                     rows={4}
