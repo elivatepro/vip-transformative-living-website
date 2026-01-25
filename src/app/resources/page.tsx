@@ -2,6 +2,7 @@ import { Section } from "@/components/ui/section";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { getNewsletters } from "@/lib/api";
 import Link from "next/link";
+import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Check, BookOpen, MonitorPlay, FileText } from "lucide-react";
 
@@ -56,7 +57,7 @@ export default async function ResourcesPage() {
 
         <div className="relative z-10">
           <span className="text-gold uppercase tracking-[0.2em] text-sm font-bold">Free Resources</span>
-          <h1 className="text-5xl md:text-7xl font-serif font-bold text-foreground">
+          <h1 className="text-5xl md:text-7xl font-serif font-bold text-foreground mt-6 mb-8">
             Start Your Transformation Today
           </h1>
           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -102,13 +103,13 @@ export default async function ResourcesPage() {
       {/* 3. FREE E-BOOK */}
       <Section>
         <div className="flex flex-col md:flex-row gap-16 items-center max-w-6xl mx-auto">
-          <div className="flex-1 order-2 md:order-1 relative aspect-[3/4] w-full max-w-md bg-black rounded-lg border border-gold/30 flex items-center justify-center shadow-2xl">
-            {/* Book Cover Placeholder */}
-            <div className="text-center p-8">
-              <BookOpen className="w-16 h-16 text-gold/50 mx-auto mb-4" />
-              <h3 className="font-serif text-2xl text-gold mb-2">Breaking Free</h3>
-              <p className="text-xs text-muted-foreground uppercase tracking-widest">Discover Your Purpose, Power, and Prosperity</p>
-            </div>
+          <div className="flex-1 order-2 md:order-1 relative aspect-[3/4] w-full max-w-lg bg-transparent flex items-center justify-center">
+            <Image
+              src="/images/breaking-free-book-cover.png"
+              alt="Breaking Free E-Book Cover"
+              fill
+              className="object-contain drop-shadow-2xl scale-125"
+            />
           </div>
           <div className="flex-1 order-1 md:order-2 space-y-6">
             <span className="text-gold font-bold text-sm uppercase tracking-widest">Free Download</span>

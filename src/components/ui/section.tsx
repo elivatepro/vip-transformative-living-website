@@ -13,9 +13,9 @@ export function Section({
   ...props 
 }: SectionProps) {
   const bgColors = {
-    default: 'bg-background',
-    alternate: 'bg-surface',
-    dark: 'bg-black',
+    default: 'bg-transparent', // Allow global background to show through
+    alternate: 'bg-surface/90 backdrop-blur-sm', // Semi-transparent surface
+    dark: 'bg-black/90 backdrop-blur-sm',
   };
 
   const maxW = {

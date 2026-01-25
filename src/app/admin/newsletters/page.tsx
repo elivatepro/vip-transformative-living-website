@@ -22,8 +22,8 @@ export default async function NewslettersAdmin() {
         </Link>
       </div>
 
-      <div className="bg-surface border border-border rounded-lg overflow-hidden">
-        <table className="w-full text-sm text-left">
+      <div className="bg-surface border border-border rounded-lg overflow-hidden overflow-x-auto">
+        <table className="w-full text-sm text-left min-w-[600px]">
           <thead className="bg-surface-elevated text-muted-foreground uppercase text-xs">
             <tr>
               <th className="px-6 py-4 font-medium">Title</th>

@@ -26,8 +26,8 @@ export default async function EventsAdmin() {
         </Button>
       </div>
 
-      <div className="bg-surface border border-border rounded-lg overflow-hidden">
-        <table className="w-full text-sm">
+      <div className="bg-surface border border-border rounded-lg overflow-hidden overflow-x-auto">
+        <table className="w-full text-sm min-w-[600px]">
           <thead className="uppercase text-xs text-muted-foreground bg-surface-elevated">
             <tr>
               <th className="px-6 py-3 text-left">Title</th>

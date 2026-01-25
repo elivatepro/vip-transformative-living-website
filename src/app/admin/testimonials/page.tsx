@@ -31,8 +31,8 @@ export default async function TestimonialsAdmin() {
         <CardHeader className="bg-surface-elevated/50">
           <CardTitle className="text-sm text-muted-foreground">Library</CardTitle>
         </CardHeader>
-        <CardContent className="p-0">
-          <table className="w-full text-sm">
+        <CardContent className="p-0 overflow-x-auto">
+          <table className="w-full text-sm min-w-[600px]">
             <thead className="uppercase text-xs text-muted-foreground bg-surface-elevated">
               <tr>
                 <th className="px-6 py-3 text-left">Client</th>

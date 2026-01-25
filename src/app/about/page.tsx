@@ -3,6 +3,7 @@ import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { BookCallButton } from "@/components/book-call-button";
+import { SquareHeroSlider } from "@/components/square-hero-slider";
 
 export const metadata = {
   title: "About Coach Wayne | VIP Transformative Living",
@@ -13,48 +14,62 @@ export default function AboutPage() {
   return (
     <div className="pt-20 font-sans">
       {/* 1. HERO - ABOUT COACH WAYNE */}
-      <section className="relative min-h-[80vh] flex items-center overflow-hidden">
-        {/* Background Image with Overlay */}
-        <div 
-          className="absolute inset-0 z-0"
-          style={{ 
-            backgroundImage: "url('/images/sunrise-mountains.jpg')",
-            backgroundSize: "cover",
-            backgroundPosition: "center"
-          }}
-        >
-          {/* Dark Gradient Overlay */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/60 to-background/90" />
-        </div>
+      <section className="relative min-h-[95vh] flex items-center overflow-hidden">
         
-        <div className="container mx-auto px-4 relative z-10 grid lg:grid-cols-2 gap-12 items-center">
-          {/* Image */}
-          <div className="relative order-2 lg:order-1">
-            <div className="relative aspect-[4/5] rounded-2xl overflow-hidden border border-gold/20 shadow-2xl">
-              <Image
-                src="/images/coach-wayne-new.jpg"
-                alt="Coach Wayne Dawson"
-                fill
-                className="object-cover"
-                sizes="(max-width: 768px) 100vw, 50vw"
-                priority
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-80" />
+        {/* Background - Not black. Using a deep charcoal gradient with noise and glow */}
+        <div className="absolute inset-0 bg-[#0F0F0F] z-0" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgba(197,160,89,0.08)_0%,transparent_50%),radial-gradient(circle_at_80%_70%,rgba(30,58,138,0.05)_0%,transparent_50%)] z-0" />
+        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay z-0" />
+        
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="grid lg:grid-cols-2 gap-20 items-center max-w-[1400px] mx-auto px-4 lg:px-12">
+            
+            {/* Square Image Slider */}
+            <div className="relative order-2 lg:order-1 flex justify-center lg:justify-end">
+              <SquareHeroSlider />
             </div>
-            {/* Decorative Element */}
-            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-gold/10 rounded-full blur-3xl z-[-1]" />
-          </div>
 
-          {/* Text */}
-          <div className="space-y-6 order-1 lg:order-2">
-            <span className="text-gold uppercase tracking-[0.2em] text-sm font-bold">Meet Your Guide</span>
-            <h1 className="text-5xl md:text-7xl font-serif font-bold leading-tight">
-              Coach Wayne Dawson
-            </h1>
-            <p className="text-xl md:text-2xl text-muted-foreground font-light border-l-2 border-gold pl-6">
-              Transformational Coach | Speaker | Author <br/>
-              <span className="text-white text-lg mt-2 block">25+ Years Guiding Men Through Life's Pivotal Moments</span>
-            </p>
+            {/* Text Content */}
+            <div className="order-1 lg:order-2 text-white">
+              <div className="inline-block mb-6">
+                <span className="text-gold uppercase tracking-[0.3em] text-[10px] font-bold py-1 px-3 border border-gold/20 rounded-full bg-gold/5">
+                  Meet Your Guide
+                </span>
+              </div>
+              
+              <h1 className="font-serif text-5xl md:text-[5rem] font-medium leading-[1] mb-8 drop-shadow-sm">
+                Coach Wayne <br/> Dawson
+              </h1>
+              
+              <div className="h-[1px] w-[100px] bg-gold/50 mb-8" />
+              
+              <div className="space-y-4 mb-10">
+                <p className="text-xl md:text-2xl text-white/90 font-light flex items-center gap-4">
+                  Transformational Coach 
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold" />
+                  Speaker
+                  <span className="w-1.5 h-1.5 rounded-full bg-gold" />
+                  Author
+                </p>
+                <p className="text-lg text-white/60 font-light max-w-lg leading-relaxed">
+                  Dedicated to guiding high-achieving men through life&apos;s most pivotal transitions for over 25 years.
+                </p>
+              </div>
+              
+              <div className="flex flex-col sm:flex-row gap-6 items-center">
+                <Button variant="primary" size="lg" className="px-10 h-14 text-base shadow-xl" asChild>
+                  <Link href="#story">Read My Full Story</Link>
+                </Button>
+                <Link 
+                  href="#story" 
+                  className="text-gold hover:text-white transition-colors flex items-center gap-2 font-medium tracking-wide group"
+                >
+                  Learn more about my approach 
+                  <span className="group-hover:translate-x-1 transition-transform">→</span>
+                </Link>
+              </div>
+            </div>
+
           </div>
         </div>
       </section>

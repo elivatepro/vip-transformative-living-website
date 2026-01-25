@@ -10,7 +10,7 @@ export default function Home() {
     <div className="flex flex-col min-h-screen font-sans">
       
       {/* 1. HERO SECTION */}
-      <section className="relative min-h-[100dvh] w-full bg-[#0A0A0A] bg-noise overflow-hidden flex items-center justify-center pt-20 md:py-0">
+      <section className="relative min-h-[100dvh] w-full overflow-hidden flex items-center justify-center pt-20 md:py-0">
         
         <div className="container mx-auto px-4 relative z-10 w-full">
           {/* THE HERO CARD */}
@@ -83,7 +83,7 @@ export default function Home() {
                     Take Free Assessment
                   </a>
                 </Button>
-                <BookCallButton className="text-lg px-8 py-6 w-full sm:w-auto bg-black/40 text-white border border-gold hover:bg-gold hover:text-black shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all">
+                <BookCallButton variant="secondary" size="lg" className="text-lg px-8 py-6 w-full sm:w-auto bg-black/40 text-white border border-gold hover:bg-gold hover:text-black shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all">
                   Book Discovery Call
                 </BookCallButton>
               </div>
@@ -101,7 +101,7 @@ export default function Home() {
       </section>
 
       {/* 2. PROBLEM AGITATION */}
-      <Section className="bg-[#0A0A0A] bg-noise relative overflow-hidden">
+      <Section className="relative overflow-hidden">
         <div className="container mx-auto px-4 relative z-10">
           <div className="text-center mb-16 space-y-4">
             <span className="text-gold uppercase tracking-[0.2em] text-sm font-bold">Sound Familiar?</span>
@@ -218,9 +218,10 @@ export default function Home() {
       </Section>
 
       {/* 4. ABOUT TEASER */}
-      <Section className="overflow-hidden bg-[#0A0A0A] relative">
+      <Section className="overflow-hidden relative">
         <div className="absolute inset-0 bg-cover bg-left opacity-60" style={{ backgroundImage: "url('/images/river-timelapse.jpg')" }} />
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-[#0A0A0A]/50 to-[#0A0A0A]" />
+        {/* Darker overlay for better text contrast */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/80 to-black/95" />
         
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto relative z-10">
           {/* Image - Swapped to Night Photo for variety */}
@@ -241,12 +242,12 @@ export default function Home() {
           </div>
 
           {/* Text Content */}
-          <div className="order-1 md:order-2 space-y-8">
+          <div className="order-1 md:order-2 space-y-8 bg-black/40 backdrop-blur-sm p-6 md:p-8 rounded-2xl border border-white/5">
             <div className="space-y-4">
               <span className="text-gold uppercase tracking-[0.2em] text-sm font-bold">Your Guide</span>
-              <h2 className="text-4xl md:text-5xl font-serif font-bold">"I've Been Where You Are."</h2>
+              <h2 className="text-4xl md:text-5xl font-serif font-bold text-white drop-shadow-lg">"I've Been Where You Are."</h2>
             </div>
-            <div className="space-y-6 text-lg text-muted-foreground leading-relaxed">
+            <div className="space-y-6 text-lg text-gray-200 leading-relaxed drop-shadow-md">
               <p>
                 For over 25 years, I've walked alongside men through career upheavals, 
                 relationship crossroads, and the quiet crisis of purpose that often 
@@ -257,12 +258,12 @@ export default function Home() {
                 My own journey taught me that lasting change doesn't come from motivational speeches.
               </p>
               <p>
-                It comes from doing the deep work of aligning <strong className="text-white">who you are</strong> with <strong className="text-white">how you're living</strong>.
+                It comes from doing the deep work of aligning <strong className="text-white font-bold">who you are</strong> with <strong className="text-white font-bold">how you're living</strong>.
               </p>
             </div>
-            <Button variant="link" className="text-gold p-0 text-lg group" asChild>
+            <Button variant="primary" size="lg" className="group text-lg px-8" asChild>
               <Link href="/about">
-                Read My Full Story <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                Read My Full Story <ArrowRight className="ml-2 w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
           </div>
@@ -270,7 +271,7 @@ export default function Home() {
       </Section>
 
       {/* 5. SOCIAL PROOF */}
-      <Section className="bg-[#0A0A0A]">
+      <Section>
         <div className="container mx-auto px-4">
           <div className="text-center mb-16 space-y-4">
             <span className="text-gold uppercase tracking-[0.2em] text-sm font-bold">Real Transformations</span>
@@ -330,7 +331,7 @@ export default function Home() {
       </Section>
 
       {/* 6. SERVICES OVERVIEW (TIERS) */}
-      <Section className="bg-surface-elevated bg-noise">
+      <Section className="bg-surface-elevated">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
           <span className="text-gold uppercase tracking-[0.2em] text-sm font-bold">How We Work Together</span>
           <h2 className="text-3xl md:text-5xl font-serif font-bold">Choose Your Path to Transformation</h2>
@@ -411,7 +412,7 @@ export default function Home() {
       </Section>
 
       {/* 7. NEWSLETTER SIGNUP */}
-      <Section className="bg-[#0A0A0A] relative overflow-hidden">
+      <Section className="relative overflow-hidden">
         {/* Background Skyline Fade */}
         <div className="absolute inset-0 bg-cover bg-right opacity-30" style={{ backgroundImage: "url('/images/sunrise-mountains.jpg')" }} />
         <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#0A0A0A]/50 to-[#0A0A0A]" />

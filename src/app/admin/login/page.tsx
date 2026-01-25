@@ -95,7 +95,7 @@ export default function AdminLogin() {
             
             {error && <p className="text-red-400 text-sm text-center">{error}</p>}
             
-            <Button type="submit" className="w-full bg-gold text-black hover:bg-gold-hover font-semibold rounded-lg shadow-[0_10px_30px_rgba(0,0,0,0.25)]" disabled={loading}>
+            <Button type="submit" variant="primary" className="w-full font-semibold rounded-lg shadow-[0_10px_30px_rgba(0,0,0,0.25)]" disabled={loading}>
               {loading ? 'Authenticating...' : 'Sign In'}
             </Button>
           </form>

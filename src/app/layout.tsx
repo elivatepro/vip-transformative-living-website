@@ -3,6 +3,7 @@ import { Playfair_Display, Inter } from "next/font/google";
 import "./globals.css";
 import Script from "next/script";
 import { AppShell } from "@/components/layout/app-shell";
+import { BackgroundEffects } from "@/components/ui/background-effects";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -42,6 +43,7 @@ export default function RootLayout({
       <body
         className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-background text-foreground min-h-screen`}
       >
+        <BackgroundEffects />
         <Script src="https://link.tkportalsghl.com/js/form_embed.js" strategy="lazyOnload" />
         <AppShell>{children}</AppShell>
       </body>
