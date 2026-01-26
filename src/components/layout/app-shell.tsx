@@ -24,14 +24,16 @@ function AppShellContent({ children }: { children: React.ReactNode }) {
 
   return (
     <BookingProvider>
-      <AnimatePresence>
-        {isLoading && <PageLoader />}
-      </AnimatePresence>
-      <Navbar onNavigate={() => setIsLoading(true)} />
-      <main className="flex-grow">
-        {children}
-      </main>
-      <Footer />
+      <div className="flex min-h-screen flex-col">
+        <AnimatePresence>
+          {isLoading && <PageLoader />}
+        </AnimatePresence>
+        <Navbar onNavigate={() => setIsLoading(true)} />
+        <main className="flex-1">
+          {children}
+        </main>
+        <Footer />
+      </div>
     </BookingProvider>
   );
 }
