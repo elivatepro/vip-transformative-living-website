@@ -44,6 +44,12 @@ export default function RootLayout({
         className={`${playfair.variable} ${inter.variable} font-sans antialiased bg-background text-foreground min-h-screen`}
       >
         <BackgroundEffects />
+        <Script
+          id="chatway"
+          src="https://cdn.chatway.app/widget.js?id=mPMVCDgWzran"
+          strategy="afterInteractive"
+          async
+        />
         <Script src="https://link.tkportalsghl.com/js/form_embed.js" strategy="lazyOnload" />
         <AppShell>{children}</AppShell>
       </body>
