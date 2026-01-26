@@ -4,6 +4,7 @@ import { Section } from "@/components/ui/section";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, ChevronRight, PlayCircle } from "lucide-react";
 import { BookCallButton, BookCallLink } from "@/components/book-call-button";
+import { CompactNewsletterForm } from "@/components/compact-newsletter-form";
 
 export default function Home() {
   return (
@@ -429,18 +430,13 @@ export default function Home() {
             </div>
           </div>
           <div className="flex-1 w-full">
-            <form className="flex flex-col gap-3" action="/api/newsletter/subscribe" method="POST">
-              <input 
-                type="email" 
-                placeholder="Enter your email address" 
-                className="w-full px-4 py-3 rounded-lg bg-black/30 border border-border focus:border-gold focus:outline-none transition-colors"
-                required 
-              />
-              <Button type="submit" variant="secondary" className="w-full">
-                Get the Newsletter
-              </Button>
-              <p className="text-xs text-muted-foreground text-center">We respect your privacy. Unsubscribe anytime.</p>
-            </form>
+            <CompactNewsletterForm
+              source="homepage_newsletter"
+              placeholder="Enter your email address"
+              buttonText="Get the Newsletter"
+              className="w-full"
+            />
+            <p className="text-xs text-muted-foreground text-center mt-3">We respect your privacy. Unsubscribe anytime.</p>
           </div>
         </div>
       </Section>
