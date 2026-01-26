@@ -60,10 +60,10 @@ export default async function CoachingPage() {
             src="/images/coach-wayne-in-session.png" 
             alt="Coach Wayne in a coaching session" 
             fill 
-            className="object-cover opacity-60"
+            className="object-cover opacity-80"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A] via-[#0A0A0A]/80 to-[#0A0A0A]/40" />
+          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/70 via-[#0A0A0A]/55 to-[#0A0A0A]/25" />
         </div>
         
         <div className="container mx-auto px-6 md:px-16 relative z-10">
