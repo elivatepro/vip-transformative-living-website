@@ -60,12 +60,12 @@ export default async function CoachingPage() {
             src="/images/coach-wayne-in-session.png" 
             alt="Coach Wayne in a coaching session" 
             fill 
-            className="object-cover opacity-25"
+            className="object-cover opacity-50"
             priority
             quality={90}
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-[#0A0A0A]/85 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-[#0A0A0A]/70 mix-blend-multiply" />
           <div className="absolute inset-0 bg-noise opacity-20 mix-blend-overlay" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
         </div>
@@ -197,8 +197,9 @@ export default async function CoachingPage() {
       </Section>
 
       {/* 3. THE DIFFERENCE — What makes Coach Wayne's approach unique */}
-      <Section className="bg-[#0A0A0A] py-24 md:py-32">
-        <div className="container mx-auto px-6 md:px-16">
+      <Section className="bg-[#0A0A0A] py-24 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay pointer-events-none" />
+        <div className="container mx-auto px-6 md:px-16 relative z-10">
           <div className="text-center mb-20">
             <span className="text-[#D4AF37] uppercase tracking-[0.2em] text-[12px] font-bold">WHY COACH WAYNE</span>
             {/* H1 */}
@@ -259,6 +260,7 @@ export default async function CoachingPage() {
       <Section className="bg-[#141414] relative overflow-hidden py-24 md:py-32">
         {/* Centered gold glow */}
         <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-[radial-gradient(circle,rgba(212,175,55,0.04)_0%,transparent_70%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay pointer-events-none" />
         
         <div className="container mx-auto px-6 md:px-16 relative z-10">
           <div className="text-center mb-16">
@@ -339,8 +341,9 @@ export default async function CoachingPage() {
       </Section>
 
       {/* 5. WHO THIS IS FOR / NOT FOR */}
-      <Section className="bg-[#0A0A0A] py-24 md:py-32">
-        <div className="container mx-auto px-6 md:px-16">
+      <Section className="bg-[#0A0A0A] py-24 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay pointer-events-none" />
+        <div className="container mx-auto px-6 md:px-16 relative z-10">
           <div className="grid lg:grid-cols-2 gap-20">
             {/* Who it is for */}
             <div>
@@ -471,8 +474,9 @@ export default async function CoachingPage() {
       </Section>
 
       {/* 8. VIDEO TESTIMONIALS — Social proof (the closer) */}
-      <Section className="bg-[#0A0A0A] py-24 md:py-32">
-        <div className="container mx-auto px-6 md:px-16">
+      <Section className="bg-[#0A0A0A] py-24 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay pointer-events-none" />
+        <div className="container mx-auto px-6 md:px-16 relative z-10">
           <div className="text-center mb-16">
             <span className="text-[#D4AF37] uppercase tracking-[0.2em] text-[12px] font-bold">REAL TRANSFORMATIONS</span>
             {/* H1 */}
@@ -547,6 +551,7 @@ export default async function CoachingPage() {
       <Section id="packages" className="bg-[#0A0A0A] relative overflow-hidden py-24 md:py-32">
         {/* gold corner glow */}
         <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(212,175,55,0.06)_0%,transparent_70%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay pointer-events-none" />
         
         <div className="container mx-auto px-6 md:px-16 relative z-10">
           <div className="text-center mb-20">
@@ -641,8 +646,9 @@ export default async function CoachingPage() {
       </Section>
 
       {/* 11. FREQUENTLY ASKED QUESTIONS */}
-      <Section className="bg-[#141414] py-24 md:py-32">
-        <div className="container mx-auto px-6 md:px-16">
+      <Section className="bg-[#141414] py-24 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay pointer-events-none" />
+        <div className="container mx-auto px-6 md:px-16 relative z-10">
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-16">
               <span className="text-[#D4AF37] uppercase tracking-[0.2em] text-[12px] font-bold">OBJECTION HANDLING</span>
@@ -666,8 +672,9 @@ export default async function CoachingPage() {
       </Section>
 
       {/* 12. ABOUT COACH WAYNE (Mini Bio) */}
-      <Section className="bg-[#0A0A0A] py-24 md:py-32">
-        <div className="container mx-auto px-6 md:px-16">
+      <Section className="bg-[#0A0A0A] py-24 md:py-32 relative overflow-hidden">
+        <div className="absolute inset-0 bg-noise opacity-[0.03] mix-blend-overlay pointer-events-none" />
+        <div className="container mx-auto px-6 md:px-16 relative z-10">
           <div className="max-w-[1280px] mx-auto grid md:grid-cols-2 gap-16 items-center">
              <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-[rgba(212,175,55,0.2)] shadow-2xl">
                 <Image 
