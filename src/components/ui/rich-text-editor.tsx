@@ -6,8 +6,8 @@ import ImageExtension from '@tiptap/extension-image';
 import LinkExtension from '@tiptap/extension-link';
 import { Button } from '@/components/ui/button';
 import { Bold, Italic, List, ListOrdered, Quote, Heading2, Heading3, Link as LinkIcon, Image as ImageIcon, Undo, Redo } from 'lucide-react';
-import { createClient } from '@/lib/supabase-client';
 import { useState, useCallback } from 'react';
+import { uploadArticleImage } from '@/app/admin/articles/upload-action';
 
 interface RichTextEditorProps {
   content: string;
@@ -43,25 +43,17 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
   const uploadImage = useCallback(async (file: File) => {
     try {
       setIsUploading(true);
-      const supabase = createClient();
       
-      const fileExt = file.name.split('.').pop();
-      const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const result = await uploadArticleImage(formData);
 
-      const { error: uploadError } = await supabase.storage
-        .from('article-images')
-        .upload(filePath, file);
-
-      if (uploadError) {
-        throw uploadError;
+      if (!result.success) {
+        throw new Error(result.error);
       }
 
-      const { data } = supabase.storage
-        .from('article-images')
-        .getPublicUrl(filePath);
-
-      return data.publicUrl;
+      return result.url;
     } catch (error: any) {
       console.error('Error uploading image:', error);
       const message = error?.message || 'Unknown error';
