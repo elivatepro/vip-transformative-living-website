@@ -62,9 +62,10 @@ export function RichTextEditor({ content, onChange, placeholder }: RichTextEdito
         .getPublicUrl(filePath);
 
       return data.publicUrl;
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error uploading image:', error);
-      alert('Error uploading image. Please make sure you are logged in and the "article-images" bucket exists.');
+      const message = error?.message || 'Unknown error';
+      alert(`Error uploading image: ${message}`);
       return null;
     } finally {
       setIsUploading(false);
