@@ -33,7 +33,14 @@ export async function middleware(request: NextRequest) {
     }
   )
 
-  const { data: { user } } = await supabase.auth.getUser()
+  let user = null
+  try {
+    const { data } = await supabase.auth.getUser()
+    user = data.user
+  } catch (error) {
+    // Suppress auth errors to prevent blocking public routes
+    console.error('Middleware auth error:', error)
+  }
 
   // Protect Admin Routes
   if (request.nextUrl.pathname.startsWith('/admin')) {

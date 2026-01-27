@@ -60,17 +60,18 @@ export default async function CoachingPage() {
             src="/images/coach-wayne-in-session.png" 
             alt="Coach Wayne in a coaching session" 
             fill 
-            className="object-cover opacity-70"
+            className="object-cover opacity-25"
             priority
             quality={90}
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/75 via-[#0A0A0A]/65 to-[#0A0A0A]/35" />
+          <div className="absolute inset-0 bg-[#0A0A0A]/85 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-noise opacity-20 mix-blend-overlay" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0A0A0A] via-transparent to-transparent" />
         </div>
         
         <div className="container mx-auto px-6 md:px-16 relative z-10">
           <div className="max-w-[1280px] mx-auto relative">
-            <div className="absolute -inset-6 md:-inset-8 rounded-3xl bg-black/22 md:bg-black/28 backdrop-blur-sm" aria-hidden="true" />
             <span className="relative text-[#D4AF37] uppercase tracking-[0.3em] text-[12px] font-bold block mb-6 border-l-2 border-[#D4AF37] pl-4">
               ONE-ON-ONE TRANSFORMATIONAL COACHING
             </span>
