@@ -116,14 +116,27 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
 
         <div className="flex items-center gap-4">
-          <div className="relative hidden md:block">
+          <form 
+            action={(formData) => {
+              const q = formData.get('q');
+              if (q) router.push(`/admin/search?q=${encodeURIComponent(q as string)}`);
+            }}
+            onSubmit={(e) => {
+              e.preventDefault();
+              const form = e.currentTarget;
+              const q = (form.elements.namedItem('q') as HTMLInputElement).value;
+              if (q) router.push(`/admin/search?q=${encodeURIComponent(q)}`);
+            }}
+            className="relative hidden md:block"
+          >
             <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <input 
+              name="q"
               type="text" 
               placeholder="Search..." 
               className="h-9 w-64 rounded-md border border-input bg-transparent px-3 py-1 pl-9 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
             />
-          </div>
+          </form>
           <Button variant="ghost" size="icon" className="text-muted-foreground">
             <Bell className="h-5 w-5" />
           </Button>

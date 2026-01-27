@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Download, Search, Trash2 } from "lucide-react";
+import { Download, Search, Trash2, Users } from "lucide-react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -63,7 +63,10 @@ export default async function SubscribersPage({ searchParams }: SubscribersPageP
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-serif">Newsletter Subscribers</h1>
+          <h1 className="text-2xl font-bold font-serif flex items-center gap-2">
+            <Users className="h-6 w-6 text-gold" />
+            Newsletter Subscribers
+          </h1>
           <p className="text-muted-foreground">{count || 0} total subscribers</p>
         </div>
         <Button variant="outline" className="gap-2">

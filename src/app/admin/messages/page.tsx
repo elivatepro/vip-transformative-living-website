@@ -1,7 +1,7 @@
 import { createClient } from "@/lib/supabase-server";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, Mail, Archive, Trash2, CheckCircle, Clock } from "lucide-react";
+import { Search, Mail, Archive, Trash2, CheckCircle, Clock, MessageSquare } from "lucide-react";
 import Link from "next/link";
 import { markAsRead, archiveMessage, deleteMessage, updateNotes } from "./actions";
 import { cn } from "@/lib/utils";
@@ -49,7 +49,18 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
   }
 
   return (
-    <div className="flex flex-col md:flex-row md:h-[calc(100vh-8rem)] gap-6 h-auto">
+    <div className="space-y-6">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-2xl font-bold font-serif flex items-center gap-2">
+            <MessageSquare className="h-6 w-6 text-gold" />
+            Messages
+          </h1>
+          <p className="text-muted-foreground">{messages?.length || 0} messages found</p>
+        </div>
+      </div>
+
+      <div className="flex flex-col md:flex-row md:h-[calc(100vh-12rem)] gap-6 h-auto">
         {/* Inbox List (Left Panel) */}
         <div className="w-full md:w-1/3 flex flex-col bg-card border border-border rounded-lg overflow-hidden h-96 md:h-auto">
             <div className="p-4 border-b border-border space-y-4">
@@ -179,6 +190,7 @@ export default async function MessagesPage({ searchParams }: MessagesPageProps) 
                 </div>
             )}
         </div>
+      </div>
     </div>
   );
 }

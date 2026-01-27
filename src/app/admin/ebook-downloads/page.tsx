@@ -61,7 +61,10 @@ export default async function EbookDownloadsPage({ searchParams }: EbookDownload
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold font-serif">E-book Downloads</h1>
+          <h1 className="text-2xl font-bold font-serif flex items-center gap-2">
+            <Download className="h-6 w-6 text-gold" />
+            E-book Downloads
+          </h1>
           <p className="text-muted-foreground">{count || 0} leads generated</p>
         </div>
         <Button variant="outline" className="gap-2">
