@@ -50,7 +50,6 @@ export default function RootLayout({
           strategy="afterInteractive"
           async
         />
-        <Script src="https://link.tkportalsghl.com/js/form_embed.js" strategy="lazyOnload" />
         <AppShell>{children}</AppShell>
       </body>
     </html>

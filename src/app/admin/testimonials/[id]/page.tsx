@@ -101,7 +101,6 @@ export default function EditTestimonialPage({ params }: { params: { id: string }
               <div>
                 <p className="text-xs text-muted-foreground mb-2">Photo preview</p>
                 <div className="aspect-[4/3] overflow-hidden rounded-md border border-border bg-black/40 flex items-center justify-center">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img src={photoUrl} alt="Photo preview" className="w-full h-full object-cover" />
                 </div>
               </div>
