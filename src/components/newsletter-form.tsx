@@ -5,6 +5,7 @@ import { useFormStatus } from 'react-dom';
 import { Button } from '@/components/ui/button';
 import { subscribeToNewsletter } from '@/app/actions';
 import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 
 interface SubmitButtonProps {
   label?: string;
@@ -47,11 +48,15 @@ export function NewsletterForm({
 }: NewsletterFormProps) {
   const [message, setMessage] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const router = useRouter();
 
   async function clientAction(formData: FormData) {
     const result = await subscribeToNewsletter(null, formData);
     setMessage(result.message);
     setIsSuccess(result.success);
+    if (result.success) {
+      router.refresh();
+    }
   }
 
   if (isSuccess) {

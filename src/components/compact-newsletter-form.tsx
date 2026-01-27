@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { subscribeToNewsletter } from "@/app/actions";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface CompactNewsletterFormProps {
   source?: string;
@@ -20,6 +21,7 @@ export function CompactNewsletterForm({
   const [isPending, setIsPending] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
   const [isSuccess, setIsSuccess] = useState(false);
+  const router = useRouter();
 
   async function handleSubmit(formData: FormData) {
     setIsPending(true);
@@ -29,6 +31,9 @@ export function CompactNewsletterForm({
       const result = await subscribeToNewsletter(null, formData);
       setMessage(result.message);
       setIsSuccess(result.success);
+      if (result.success) {
+        router.refresh();
+      }
     } catch (error) {
       setMessage("Something went wrong. Please try again.");
       setIsSuccess(false);

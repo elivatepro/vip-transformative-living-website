@@ -15,149 +15,95 @@ export default async function Home() {
     <div className="flex flex-col min-h-screen font-sans">
       
       {/* 1. HERO SECTION */}
-      {isSubscribed ? (
-        // SUBSCRIBED HERO: "Your Next Chapter Starts Here" (Original)
-        <section className="relative min-h-[100dvh] w-full overflow-hidden flex items-center justify-center pt-20 md:py-0">
-          
-          <div className="container mx-auto px-4 relative z-10 w-full">
-            {/* THE HERO CARD */}
-            <div className="relative w-full bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:grid md:grid-cols-2 min-h-0 h-auto md:min-h-[700px]">
-              
-              {/* CARD BACKGROUND IMAGE (Blurred) */}
-              <div 
-                className="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none z-0"
-                style={{
-                  backgroundImage: "url('/images/sunset-mountains.jpg')",
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center',
-                  filter: 'blur(20px) contrast(1.1) brightness(0.7)'
-                }}
-              />
-              
-              {/* CARD BACKGROUND EFFECTS */}
-              <div className="absolute inset-0 pointer-events-none">
-                {/* Desktop Right Glow (Inside Card) */}
-                <div className="hidden md:block absolute top-1/2 right-[-10%] -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(197,160,89,0.15)_0%,transparent_70%)] blur-[80px]" />
-                {/* Mobile Top Glow (Inside Card) */}
-                <div className="block md:hidden absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(197,160,89,0.2)_0%,transparent_70%)] blur-[60px]" />
-              </div>
-
-              {/* MOBILE IMAGE (Stacked Top) */}
-              <div className="block md:hidden relative w-full h-[35vh] min-h-[250px]">
-                <Image
-                  src="/images/wayne-transparent.png"
-                  alt="Coach Wayne"
-                  fill
-                  className="object-cover object-top opacity-90 scale-110 translate-y-4"
-                  priority
-                  quality={90}
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#121212]/20 to-[#121212]" />
-              </div>
-
-              {/* DESKTOP IMAGE (Right Side, Full Height of Card) */}
-              <div className="hidden md:block relative h-full w-full order-last">
-                <Image
-                  src="/images/wayne-transparent.png"
-                  alt="Coach Wayne"
-                  fill
-                  className="object-cover object-center lg:object-right-top scale-110 translate-y-10"
-                  priority
-                  quality={90}
-                  style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 100%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 100%)' }}
-                />
-              </div>
-
-              {/* CONTENT (Text) */}
-              <div className="relative z-10 flex flex-col justify-end md:justify-center p-6 md:p-16 space-y-4 md:space-y-8 -mt-10 md:mt-0 bg-gradient-to-t from-[#121212] via-[#121212]/80 to-transparent md:bg-none">
-                 <h1 className="text-3xl md:text-6xl lg:text-7xl font-serif font-bold text-white md:text-gold-gradient leading-tight tracking-tight drop-shadow-2xl">
-                  Your Next Chapter <br className="md:hidden" /> Starts Here.
-                </h1>
-                <p className="text-sm md:text-xl text-white/90 font-light leading-relaxed drop-shadow-md max-w-xl">
-                  <span className="md:hidden">
-                    For driven men navigating life's pivotal crossroads. Transform confusion into clarity with a proven framework.
-                  </span>
-                  <span className="hidden md:inline">
-                    For driven men navigating life's pivotal crossroads — career shifts, 
-                    relationship evolution, or rediscovering purpose. Transform confusion 
-                    into clarity with a proven framework that's guided hundreds of men 
-                    to breakthrough.
-                  </span>
-                </p>
-                <div className="flex flex-col sm:flex-row gap-4 pt-4">
-                  <Button variant="primary" size="lg" className="text-lg px-8 py-6 w-full sm:w-auto bg-gold-gradient text-black hover:brightness-110 border border-gold/50 shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all duration-300" asChild>
-                    <a href="https://viptl-self-assessment-website.vercel.app/" target="_blank" rel="noopener noreferrer">
-                      Take Free Assessment
-                    </a>
-                  </Button>
-                  <BookCallButton variant="secondary" size="lg" className="text-lg px-8 py-6 w-full sm:w-auto bg-black/40 text-white border border-gold hover:bg-gold hover:text-black shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all">
-                    Book Discovery Call
-                  </BookCallButton>
-                </div>
-              </div>
-
-            </div>
-          </div>
-
-          {/* Scroll Indicator (Outside Card) */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 animate-bounce text-white/50 hidden md:block">
-            <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-1">
-              <div className="w-1 h-2 bg-gold rounded-full" />
-            </div>
-          </div>
-        </section>
-      ) : (
-        // NOT SUBSCRIBED HERO: "The Weekly Wisdom"
-        <section className="relative min-h-[100dvh] w-full overflow-hidden flex items-center justify-center pt-20 pb-10 bg-black">
-          {/* Background - Reusing existing assets for a clean look */}
-           <div 
-              className="absolute inset-0 opacity-30 pointer-events-none z-0"
+      <section className="relative min-h-[100dvh] w-full overflow-hidden flex items-center justify-center pt-20 md:py-0">
+        
+        <div className="container mx-auto px-4 relative z-10 w-full">
+          {/* THE HERO CARD */}
+          <div className="relative w-full bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-[2rem] overflow-hidden shadow-2xl flex flex-col md:grid md:grid-cols-2 min-h-0 h-auto md:min-h-[700px]">
+            
+            {/* CARD BACKGROUND IMAGE (Blurred) */}
+            <div 
+              className="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none z-0"
               style={{
                 backgroundImage: "url('/images/sunset-mountains.jpg')",
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
-                filter: 'blur(30px) brightness(0.4)'
+                filter: 'blur(20px) contrast(1.1) brightness(0.7)'
               }}
             />
-
-          <div className="container mx-auto px-4 relative z-10 w-full flex flex-col items-center justify-center text-center">
             
-            <div className="mb-6 animate-fade-in-up">
-               <span className="text-[#D4AF37] font-sans font-semibold tracking-[0.2em] uppercase text-sm md:text-base">
-                The Weekly Wisdom
-               </span>
+            {/* CARD BACKGROUND EFFECTS */}
+            <div className="absolute inset-0 pointer-events-none">
+              {/* Desktop Right Glow (Inside Card) */}
+              <div className="hidden md:block absolute top-1/2 right-[-10%] -translate-y-1/2 w-[600px] h-[600px] bg-[radial-gradient(circle,rgba(197,160,89,0.15)_0%,transparent_70%)] blur-[80px]" />
+              {/* Mobile Top Glow (Inside Card) */}
+              <div className="block md:hidden absolute top-0 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-[radial-gradient(circle,rgba(197,160,89,0.2)_0%,transparent_70%)] blur-[60px]" />
             </div>
 
-            {/* Diamond Separator */}
-            <div className="flex items-center justify-center gap-4 mb-8 opacity-80">
-              <div className="w-16 md:w-24 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
-              <div className="w-2 h-2 bg-[#D4AF37] rotate-45" />
-              <div className="w-16 md:w-24 h-px bg-gradient-to-r from-transparent via-[#D4AF37] to-transparent" />
+            {/* MOBILE IMAGE (Stacked Top) */}
+            <div className="block md:hidden relative w-full h-[35vh] min-h-[250px]">
+              <Image
+                src="/images/wayne-transparent.png"
+                alt="Coach Wayne"
+                fill
+                className="object-cover object-top opacity-90 scale-110 translate-y-4"
+                priority
+                quality={90}
+              />
+              <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#121212]/20 to-[#121212]" />
             </div>
 
-            <h1 className="font-serif text-4xl md:text-6xl lg:text-7xl text-white italic font-normal mb-6 max-w-4xl leading-tight">
-              Insights for men who refuse to settle.
-            </h1>
+            {/* DESKTOP IMAGE (Right Side, Full Height of Card) */}
+            <div className="hidden md:block relative h-full w-full order-last">
+              <Image
+                src="/images/wayne-transparent.png"
+                alt="Coach Wayne"
+                fill
+                className="object-cover object-center lg:object-right-top scale-110 translate-y-10"
+                priority
+                quality={90}
+                style={{ maskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 100%)', WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 15%, black 100%)' }}
+              />
+            </div>
 
-            <p className="font-sans text-lg md:text-xl text-white/60 mb-12 max-w-xl mx-auto font-light">
-              Delivered weekly. Read by 10,000+ men worldwide.
-            </p>
-
-            <div className="w-full max-w-md mx-auto">
-               <CompactNewsletterForm 
-                 source="homepage_hero"
-                 placeholder="Your email address"
-                 buttonText="Subscribe →"
-                 className="w-full"
-               />
-               <p className="text-white/40 text-sm mt-4">
-                 Join free. Unsubscribe anytime.
-               </p>
+            {/* CONTENT (Text) */}
+            <div className="relative z-10 flex flex-col justify-end md:justify-center p-6 md:p-16 space-y-4 md:space-y-8 -mt-10 md:mt-0 bg-gradient-to-t from-[#121212] via-[#121212]/80 to-transparent md:bg-none">
+               <h1 className="text-3xl md:text-6xl lg:text-7xl font-serif font-bold text-white md:text-gold-gradient leading-tight tracking-tight drop-shadow-2xl">
+                Your Next Chapter <br className="md:hidden" /> Starts Here.
+              </h1>
+              <p className="text-sm md:text-xl text-white/90 font-light leading-relaxed drop-shadow-md max-w-xl">
+                <span className="md:hidden">
+                  For driven men navigating life's pivotal crossroads. Transform confusion into clarity with a proven framework.
+                </span>
+                <span className="hidden md:inline">
+                  For driven men navigating life's pivotal crossroads — career shifts, 
+                  relationship evolution, or rediscovering purpose. Transform confusion 
+                  into clarity with a proven framework that's guided hundreds of men 
+                  to breakthrough.
+                </span>
+              </p>
+              <div className="flex flex-col sm:flex-row gap-4 pt-4">
+                <Button variant="primary" size="lg" className="text-lg px-8 py-6 w-full sm:w-auto bg-gold-gradient text-black hover:brightness-110 border border-gold/50 shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all duration-300" asChild>
+                  <a href="https://viptl-self-assessment-website.vercel.app/" target="_blank" rel="noopener noreferrer">
+                    Take Free Assessment
+                  </a>
+                </Button>
+                <BookCallButton variant="secondary" size="lg" className="text-lg px-8 py-6 w-full sm:w-auto bg-black/40 text-white border border-gold hover:bg-gold hover:text-black shadow-[0_0_15px_rgba(212,175,55,0.3)] transition-all">
+                  Book Discovery Call
+                </BookCallButton>
+              </div>
             </div>
 
           </div>
-        </section>
-      )}
+        </div>
+
+        {/* Scroll Indicator (Outside Card) */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 animate-bounce text-white/50 hidden md:block">
+          <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center p-1">
+            <div className="w-1 h-2 bg-gold rounded-full" />
+          </div>
+        </div>
+      </section>
 
       {/* 2. PROBLEM AGITATION */}
       <Section className="relative overflow-hidden">

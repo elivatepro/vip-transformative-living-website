@@ -2,6 +2,7 @@ import { createClient } from "@/lib/supabase-server";
 import Link from "next/link";
 import { NewsletterGrid } from "@/components/newsletter-grid";
 import { CompactNewsletterForm } from "@/components/compact-newsletter-form";
+import { cookies } from 'next/headers';
 
 export const metadata = {
   title: "The Weekly Wisdom | VIP Transformative Living",
@@ -42,6 +43,9 @@ export default async function NewsletterPage() {
     "Mindset & Growth"
   ];
 
+  const cookieStore = await cookies();
+  const isSubscribed = cookieStore.get('vip_newsletter_subscribed')?.value === 'true';
+
   return (
     <div className="bg-[#0A0A0A] min-h-screen pt-20">
       
@@ -62,11 +66,18 @@ export default async function NewsletterPage() {
                 Delivered weekly. Read by 10,000+ men worldwide.
             </p>
 
-            <CompactNewsletterForm source="newsletter_hero" className="mt-8" />
-
-            <p className="text-[13px] text-[#6B7280] mt-3">
-                Join free. Unsubscribe anytime.
-            </p>
+            {isSubscribed ? (
+               <div className="mt-8 p-4 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-lg inline-block">
+                 <p className="text-[#D4AF37] font-medium">You are subscribed to The Weekly Wisdom.</p>
+               </div>
+            ) : (
+               <>
+                <CompactNewsletterForm source="newsletter_hero" className="mt-8" />
+                <p className="text-[13px] text-[#6B7280] mt-3">
+                    Join free. Unsubscribe anytime.
+                </p>
+               </>
+            )}
         </div>
       </section>
 
@@ -134,20 +145,22 @@ export default async function NewsletterPage() {
       <NewsletterGrid initialArticles={gridArticles} categories={categories} />
 
       {/* 5. MID-PAGE NEWSLETTER CTA */}
-      <section className="bg-[#141414] py-20 px-4 md:px-16 text-center relative overflow-hidden">
-        {/* Gold Glow Background */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.08)_0%,transparent_70%)] pointer-events-none" />
-        
-        <div className="relative z-10 max-w-2xl mx-auto">
-            <h2 className="font-serif text-3xl text-[#F5F5F5] mb-4">Don't Miss an Issue</h2>
-            <p className="font-sans text-[16px] text-[#9CA3AF] mb-8">
-                Get The Weekly Wisdom delivered straight to your inbox.<br />
-                Join 10,000+ men on the journey.
-            </p>
+      {!isSubscribed && (
+        <section className="bg-[#141414] py-20 px-4 md:px-16 text-center relative overflow-hidden">
+            {/* Gold Glow Background */}
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-[radial-gradient(ellipse_at_center,rgba(212,175,55,0.08)_0%,transparent_70%)] pointer-events-none" />
+            
+            <div className="relative z-10 max-w-2xl mx-auto">
+                <h2 className="font-serif text-3xl text-[#F5F5F5] mb-4">Don't Miss an Issue</h2>
+                <p className="font-sans text-[16px] text-[#9CA3AF] mb-8">
+                    Get The Weekly Wisdom delivered straight to your inbox.<br />
+                    Join 10,000+ men on the journey.
+                </p>
 
-            <CompactNewsletterForm source="newsletter_midpage" className="mt-8" />
-        </div>
-      </section>
+                <CompactNewsletterForm source="newsletter_midpage" className="mt-8" />
+            </div>
+        </section>
+      )}
 
     </div>
   );
