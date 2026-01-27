@@ -42,6 +42,7 @@ import {
 import { useDebounce } from '@/hooks/useDebounce';
 import { createClient } from '@/lib/supabase-client';
 import { useRouter } from 'next/navigation';
+import { uploadArticleImage } from '@/app/admin/articles/upload-action';
 
 interface ArticleEditorProps {
   initialData?: {
@@ -267,32 +268,34 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
   
   // Image upload
   const handleImageUpload = async (file: File, type: 'featured' | 'content') => {
-    const fileExt = file.name.split('.').pop();
-    const fileName = `${Date.now()}.${fileExt}`;
-    const filePath = `newsletter/${fileName}`;
-    
-    // Assume 'images' bucket exists, standard in Supabase
-    const { data, error } = await supabase.storage
-      .from('images')
-      .upload(filePath, file);
-    
-    if (error) {
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const result = await uploadArticleImage(formData);
+      
+      if (!result.success) {
+        console.error('Upload error:', result.error);
+        alert('Upload failed: ' + result.error);
+        return null;
+      }
+
+      if (!result.url) {
+        throw new Error('No URL returned from upload');
+      }
+      
+      if (type === 'featured') {
+        setFeaturedImage(result.url);
+      } else if (type === 'content' && editor) {
+        editor.chain().focus().setImage({ src: result.url }).run();
+      }
+      
+      return result.url;
+    } catch (error: any) {
       console.error('Upload error:', error);
-      alert('Upload failed: ' + error.message);
+      alert('Upload failed: ' + (error.message || 'Unknown error'));
       return null;
     }
-    
-    const { data: urlData } = supabase.storage
-      .from('images')
-      .getPublicUrl(filePath);
-    
-    if (type === 'featured') {
-      setFeaturedImage(urlData.publicUrl);
-    } else if (type === 'content' && editor) {
-      editor.chain().focus().setImage({ src: urlData.publicUrl }).run();
-    }
-    
-    return urlData.publicUrl;
   };
   
   // Link handler
