@@ -67,8 +67,35 @@ export default async function NewsletterPage() {
             </p>
 
             {isSubscribed ? (
-               <div className="mt-8 p-4 bg-[#D4AF37]/10 border border-[#D4AF37]/30 rounded-lg inline-block">
-                 <p className="text-[#D4AF37] font-medium">You are subscribed to The Weekly Wisdom.</p>
+               // SUBSCRIBED HERO CONTENT
+               <div className="relative mt-8 py-12 px-8 rounded-2xl overflow-hidden border border-white/10 shadow-2xl max-w-2xl mx-auto group">
+                 
+                 {/* Nature Background Image */}
+                 <div 
+                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                   style={{ 
+                     backgroundImage: "url('/images/sunrise-mountains.jpg')",
+                     filter: "brightness(0.6)"
+                   }}
+                 />
+                 
+                 {/* Gradient Overlay */}
+                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+
+                 <div className="relative z-10 space-y-4">
+                   <div className="w-12 h-12 bg-[#D4AF37] rounded-full flex items-center justify-center mx-auto mb-4 text-black">
+                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                       <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clipRule="evenodd" />
+                     </svg>
+                   </div>
+                   
+                   <h3 className="text-2xl font-serif text-white font-bold drop-shadow-md">
+                     You're On The List.
+                   </h3>
+                   <p className="text-white/90 text-lg font-light leading-relaxed max-w-md mx-auto drop-shadow-sm">
+                     Welcome to the circle. Look out for "The Weekly Wisdom" in your inbox every Thursday.
+                   </p>
+                 </div>
                </div>
             ) : (
                <>

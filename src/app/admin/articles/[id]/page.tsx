@@ -1,10 +1,6 @@
 import { createClient } from '@/lib/supabase-server';
 import { notFound } from 'next/navigation';
-import { updateNewsletter } from '@/app/admin/actions';
-import { EditNewsletterForm } from '../edit-form';
-import type { Database } from '@/types/database';
-
-type Newsletter = Database['public']['Tables']['newsletter_articles']['Row'];
+import ArticleEditor from '@/components/admin/articles/ArticleEditor';
 
 export default async function EditNewsletterPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
@@ -19,17 +15,5 @@ export default async function EditNewsletterPage({ params }: { params: Promise<{
     notFound();
   }
 
-  const action = updateNewsletter.bind(null, id);
-
-  return (
-    <div className="max-w-4xl mx-auto space-y-8">
-      <div>
-        <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground">Newsletter</p>
-        <h1 className="text-3xl font-serif font-bold">Edit Article</h1>
-        <p className="text-muted-foreground">Update copy, category, or publish status.</p>
-      </div>
-
-      <EditNewsletterForm initial={data as Newsletter} action={action} />
-    </div>
-  );
+  return <ArticleEditor initialData={data} />;
 }

@@ -168,3 +168,154 @@ body {
     }
   }
 }
+
+/* Article Editor Styles */
+.article-editor .ProseMirror {
+  min-height: 500px;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 18px;
+  line-height: 1.8;
+  color: #D1D5DB;
+}
+
+.article-editor .ProseMirror > * + * {
+  margin-top: 1em;
+}
+
+.article-editor .ProseMirror p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  color: #4A4A4A;
+  pointer-events: none;
+  height: 0;
+  font-style: italic;
+}
+
+.article-editor .ProseMirror h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 32px;
+  font-weight: 400;
+  color: #F5F5F5;
+  margin-top: 48px;
+  margin-bottom: 16px;
+}
+
+.article-editor .ProseMirror h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 26px;
+  font-weight: 400;
+  color: #F5F5F5;
+  margin-top: 40px;
+  margin-bottom: 12px;
+}
+
+.article-editor .ProseMirror h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: #F5F5F5;
+  margin-top: 32px;
+  margin-bottom: 12px;
+}
+
+.article-editor .ProseMirror a {
+  color: #D4AF37;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.article-editor .ProseMirror strong {
+  color: #F5F5F5;
+  font-weight: 600;
+}
+
+.article-editor .ProseMirror mark {
+  background: rgba(212, 175, 55, 0.3);
+  color: #F5F5F5;
+  padding: 2px 4px;
+  border-radius: 2px;
+}
+
+.article-editor .ProseMirror ul,
+.article-editor .ProseMirror ol {
+  padding-left: 24px;
+}
+
+.article-editor .ProseMirror ul {
+  list-style-type: disc;
+}
+
+.article-editor .ProseMirror ol {
+  list-style-type: decimal;
+}
+
+.article-editor .ProseMirror li {
+  margin-bottom: 8px;
+}
+
+.article-editor .ProseMirror li > p {
+  margin-bottom: 0;
+}
+
+.article-editor .ProseMirror blockquote {
+  border-left: 3px solid #D4AF37;
+  padding-left: 24px;
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+  color: #9CA3AF;
+}
+
+.article-editor .ProseMirror hr {
+  border: none;
+  border-top: 1px solid #2A2A2A;
+  margin: 32px 0;
+}
+
+.article-editor .ProseMirror pre {
+  background: #0A0A0A;
+  border: 1px solid #2A2A2A;
+  border-radius: 8px;
+  padding: 16px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  overflow-x: auto;
+}
+
+.article-editor .ProseMirror code {
+  background: rgba(212, 175, 55, 0.1);
+  color: #D4AF37;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.9em;
+}
+
+.article-editor .ProseMirror img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 12px;
+  margin: 24px 0;
+}
+
+.article-editor .ProseMirror img.ProseMirror-selectednode {
+  outline: 2px solid #D4AF37;
+}
+
+.article-editor .ProseMirror .youtube-embed {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+  overflow: hidden;
+  border-radius: 12px;
+  margin: 24px 0;
+}
+
+.article-editor .ProseMirror .youtube-embed iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
