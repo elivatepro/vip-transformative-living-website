@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Instagram, Linkedin, Twitter, Mail, MapPin, Phone } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Twitter, Mail, MapPin, Phone, Send, Share2 } from 'lucide-react';
 import { BookCallLink } from "@/components/book-call-button";
 
 export function Footer() {
@@ -11,7 +11,7 @@ export function Footer() {
       <div className="container mx-auto px-4 md:px-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
           {/* Brand Column */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             <Link href="/" className="inline-block">
               <Image 
                 src="/images/logo-gold-texture.png" 
@@ -25,23 +25,42 @@ export function Footer() {
               Transformative life coaching for men navigating pivotal crossroads. 
               Align your values, identity, and purpose to achieve breakthrough.
             </p>
-            <div className="flex gap-4 pt-2">
-              <a href="https://facebook.com/VIPTLcoach" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-gold-hover transition-colors">
-                <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
-              </a>
-              <a href="https://instagram.com/coachwayne.vip" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-gold-hover transition-colors">
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
-              </a>
-              <a href="https://linkedin.com/in/wayne-dawson-tranformational-coach" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-gold-hover transition-colors">
-                <Linkedin className="h-5 w-5" />
-                <span className="sr-only">LinkedIn</span>
-              </a>
-              <a href="https://twitter.com/WayneDVIP" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-gold-hover transition-colors">
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
-              </a>
+            
+            <div className="space-y-4">
+              {/* Follow Us */}
+              <div>
+                <span className="text-xs font-bold text-gold uppercase tracking-wider mb-3 block">Follow Us</span>
+                <div className="flex gap-4">
+                  <a href="https://facebook.com/VIPTLcoach" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-white transition-colors" aria-label="Follow on Facebook">
+                    <Facebook className="h-5 w-5" />
+                  </a>
+                  <a href="https://instagram.com/coachwayne.vip" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-white transition-colors" aria-label="Follow on Instagram">
+                    <Instagram className="h-5 w-5" />
+                  </a>
+                  <a href="https://linkedin.com/in/wayne-dawson-tranformational-coach" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-white transition-colors" aria-label="Follow on LinkedIn">
+                    <Linkedin className="h-5 w-5" />
+                  </a>
+                  <a href="https://twitter.com/WayneDVIP" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-white transition-colors" aria-label="Follow on Twitter">
+                    <Twitter className="h-5 w-5" />
+                  </a>
+                </div>
+              </div>
+
+              {/* Share */}
+              <div>
+                <span className="text-xs font-bold text-gold uppercase tracking-wider mb-3 block">Share</span>
+                <div className="flex gap-4">
+                   <a href="mailto:?subject=Check out VIP Transformative Living&body=I found this valuable and thought of you: https://viptransformativeliving.com" className="text-muted-foreground hover:text-white transition-colors" aria-label="Share via Email">
+                    <Send className="h-5 w-5" />
+                  </a>
+                  <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fviptransformativeliving.com" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-white transition-colors" aria-label="Share on LinkedIn">
+                    <Share2 className="h-5 w-5" />
+                  </a>
+                  <a href="https://twitter.com/intent/tweet?text=Check%20out%20VIP%20Transformative%20Living%20for%20men%20who%20refuse%20to%20settle.&url=https%3A%2F%2Fviptransformativeliving.com" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-white transition-colors" aria-label="Share on Twitter">
+                    <Twitter className="h-5 w-5" />
+                  </a>
+                </div>
+              </div>
             </div>
           </div>
 

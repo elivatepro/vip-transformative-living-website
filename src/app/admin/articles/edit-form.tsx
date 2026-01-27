@@ -1,10 +1,11 @@
 'use client';
 
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { useFormStatus } from 'react-dom';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import type { Database } from '@/types/database';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 type Newsletter = Database['public']['Tables']['newsletter_articles']['Row'];
 
@@ -19,6 +20,7 @@ function SubmitButton() {
 
 export function EditNewsletterForm({ initial, action }: { initial: Newsletter; action: (prevState: any, formData: FormData) => Promise<any>; }) {
   const [state, formAction] = useActionState(action, null);
+  const [content, setContent] = useState(initial.content || '');
 
   return (
     <form action={formAction} className="space-y-6 bg-surface p-8 rounded-lg border border-border">
@@ -60,14 +62,12 @@ export function EditNewsletterForm({ initial, action }: { initial: Newsletter; a
       </div>
 
       <div className="space-y-2">
-        <label className="text-sm font-medium">Content (HTML)</label>
-        <textarea
-          name="content"
-          rows={10}
-          defaultValue={initial.content}
-          className="flex w-full rounded-md border border-input bg-surface px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold"
-          required
+        <label className="text-sm font-medium">Content</label>
+        <RichTextEditor 
+          content={content} 
+          onChange={setContent} 
         />
+        <input type="hidden" name="content" value={content} />
         {state?.errors?.content && <p className="text-red-500 text-xs">{state.errors.content}</p>}
       </div>
 

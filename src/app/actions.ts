@@ -16,6 +16,8 @@ const subscribeSchema = z.object({
   source: z.string().optional().default('website'),
 });
 
+import { cookies } from 'next/headers';
+
 export async function subscribeToNewsletter(prevState: any, formData: FormData) {
   const data = {
     email: formData.get('email'),
@@ -41,6 +43,14 @@ export async function subscribeToNewsletter(prevState: any, formData: FormData) 
 
     if (existing) {
       if (existing.is_active) {
+        // Set cookie even if already subscribed, to update client state
+        (await cookies()).set('vip_newsletter_subscribed', 'true', { 
+            maxAge: 60 * 60 * 24 * 365, // 1 year
+            path: '/',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax'
+        });
         return { success: true, message: 'You are already subscribed!' };
       } else {
         // Reactivate
@@ -53,6 +63,13 @@ export async function subscribeToNewsletter(prevState: any, formData: FormData) 
           console.error('Subscription reactivation error:', error);
           return { success: false, message: 'Could not reactivate subscription.' };
         }
+        (await cookies()).set('vip_newsletter_subscribed', 'true', { 
+            maxAge: 60 * 60 * 24 * 365, // 1 year
+            path: '/',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax'
+        });
         return { success: true, message: 'Welcome back! You have been resubscribed.' };
       }
     }
@@ -69,10 +86,25 @@ export async function subscribeToNewsletter(prevState: any, formData: FormData) 
       console.error('Subscription error:', error);
       // Handle unique constraint violation if race condition occurred
       if (error.code === '23505') { // unique_violation
+        (await cookies()).set('vip_newsletter_subscribed', 'true', { 
+            maxAge: 60 * 60 * 24 * 365, // 1 year
+            path: '/',
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax'
+        });
         return { success: true, message: 'You are already subscribed!' };
       }
       return { success: false, message: 'Something went wrong. Please try again.' };
     }
+
+    (await cookies()).set('vip_newsletter_subscribed', 'true', { 
+        maxAge: 60 * 60 * 24 * 365, // 1 year
+        path: '/',
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+    });
 
     return { success: true, message: 'Thank you for subscribing!' };
   } catch (error) {

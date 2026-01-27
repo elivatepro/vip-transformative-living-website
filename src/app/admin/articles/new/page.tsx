@@ -1,11 +1,11 @@
 'use client';
 
 import { createNewsletter } from '@/app/admin/actions';
-import { useActionState } from 'react';
+import { useActionState, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Section } from '@/components/ui/section';
 import { useFormStatus } from 'react-dom';
+import { RichTextEditor } from '@/components/ui/rich-text-editor';
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -14,6 +14,7 @@ function SubmitButton() {
 
 export default function NewNewsletterPage() {
   const [state, formAction] = useActionState(createNewsletter, null);
+  const [content, setContent] = useState('');
 
   return (
     <div className="max-w-3xl mx-auto space-y-8">
@@ -59,14 +60,13 @@ export default function NewNewsletterPage() {
         </div>
 
         <div className="space-y-2">
-          <label className="text-sm font-medium">Content (HTML)</label>
-          <textarea 
-            name="content" 
-            rows={10} 
-            className="flex w-full rounded-md border border-input bg-surface px-3 py-2 text-sm focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-gold"
-            placeholder="<p>Write your content here...</p>"
-            required
+          <label className="text-sm font-medium">Content</label>
+          <RichTextEditor 
+            content={content} 
+            onChange={setContent} 
+            placeholder="Write your article here..." 
           />
+          <input type="hidden" name="content" value={content} />
           {state?.errors?.content && <p className="text-red-500 text-xs">{state.errors.content}</p>}
         </div>
 
