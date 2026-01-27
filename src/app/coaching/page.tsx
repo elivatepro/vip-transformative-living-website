@@ -53,7 +53,7 @@ export default async function CoachingPage() {
     <div className="pt-20 font-sans bg-[#0A0A0A] text-[#F5F5F5]">
       
       {/* 1. HERO — Clear value proposition + CTA */}
-      <Section className="relative overflow-hidden py-24 md:py-32 bg-[#0A0A0A]">
+      <section className="relative overflow-hidden py-24 md:py-32 bg-[#0A0A0A]">
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <Image 
@@ -62,22 +62,24 @@ export default async function CoachingPage() {
             fill 
             className="object-cover opacity-70"
             priority
+            quality={90}
+            sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-[#0A0A0A]/75 via-[#0A0A0A]/65 to-[#0A0A0A]/35" />
         </div>
         
         <div className="container mx-auto px-6 md:px-16 relative z-10">
           <div className="max-w-[1280px] mx-auto relative">
-            <div className="absolute -inset-6 md:-inset-8 rounded-3xl bg-black/22 md:bg-black/28 backdrop-blur-[1px]" aria-hidden="true" />
-            <span className="text-[#D4AF37] uppercase tracking-[0.3em] text-[12px] font-bold block mb-6 border-l-2 border-[#D4AF37] pl-4">
+            <div className="absolute -inset-6 md:-inset-8 rounded-3xl bg-black/22 md:bg-black/28 backdrop-blur-sm" aria-hidden="true" />
+            <span className="relative text-[#D4AF37] uppercase tracking-[0.3em] text-[12px] font-bold block mb-6 border-l-2 border-[#D4AF37] pl-4">
               ONE-ON-ONE TRANSFORMATIONAL COACHING
             </span>
             {/* Hero Headline: 72px desktop / 40px mobile */}
-            <h1 className="text-[40px] md:text-[72px] font-serif font-light text-[#F5F5F5] leading-[1.1] mb-8 [text-shadow:0_2px_10px_rgba(0,0,0,0.45)]">
+            <h1 className="relative text-[40px] md:text-[72px] font-serif font-light text-[#F5F5F5] leading-[1.1] mb-8 [text-shadow:0_2px_10px_rgba(0,0,0,0.45)]">
               Real Change Requires <br className="hidden md:block" /> Real Partnership
             </h1>
             {/* Hero Subheadline: 18px desktop / 17px mobile */}
-            <p className="text-[17px] md:text-[18px] text-[#D1D5DB] font-light leading-relaxed mb-10 max-w-2xl [text-shadow:0_1px_8px_rgba(0,0,0,0.35)]">
+            <p className="relative text-[17px] md:text-[18px] text-[#D1D5DB] font-light leading-relaxed mb-10 max-w-2xl [text-shadow:0_1px_8px_rgba(0,0,0,0.35)]">
               You&apos;ve tried figuring it out alone. You&apos;ve read the books. You&apos;ve listened 
               to the podcasts. And yet here you are — still stuck, still searching, still 
               knowing there&apos;s more.
@@ -85,7 +87,7 @@ export default async function CoachingPage() {
               <span className="text-[#F5F5F5] font-medium [text-shadow:0_2px_10px_rgba(0,0,0,0.45)]">What if the missing piece isn&apos;t more information... but the right guide?</span>
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 items-center mb-12">
+            <div className="relative flex flex-col sm:flex-row gap-6 items-center mb-12">
               <BookCallButton 
                 variant="primary" 
                 size="lg" 
@@ -105,14 +107,14 @@ export default async function CoachingPage() {
               </Button>
             </div>
 
-            <div className="flex flex-wrap gap-x-8 gap-y-4 text-[14px] text-[#6B7280]">
+            <div className="relative flex flex-wrap gap-x-8 gap-y-4 text-[14px] text-[#6B7280]">
               <span className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D4AF37]" /> 25+ Years Experience</span>
               <span className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D4AF37]" /> Hundreds of Men Transformed</span>
               <span className="flex items-center gap-2"><Check className="w-4 h-4 text-[#D4AF37]" /> No-Pressure Conversation</span>
             </div>
           </div>
         </div>
-      </Section>
+      </section>
 
       {/* 2. THE PROBLEM — Why coaching (not books, not figuring it out alone) */}
       <Section id="problem" className="bg-[#141414] relative overflow-hidden py-24 md:py-32">
