@@ -15,12 +15,17 @@ import {
   HelpCircle,
   Download
 } from "lucide-react";
+import SubscriberGrowthChart from "@/components/admin/SubscriberGrowthChart";
 
 export default async function AdminDashboard() {
   const supabase = await createClient();
   const today = new Date();
   const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1).toISOString();
   
+  const thirtyDaysAgo = new Date();
+  thirtyDaysAgo.setDate(today.getDate() - 30);
+  const thirtyDaysAgoISO = thirtyDaysAgo.toISOString();
+
   // Fetch key metrics
   // Using Promise.allSettled to handle cases where tables might not exist yet
   const results = await Promise.allSettled([
@@ -36,7 +41,10 @@ export default async function AdminDashboard() {
     supabase.from('faqs').select('*', { count: 'exact', head: true }).eq('is_published', true),
     
     // Recent Messages
-    supabase.from('contact_submissions').select('id, first_name, last_name, subject, created_at, is_read').order('created_at', { ascending: false }).limit(5)
+    supabase.from('contact_submissions').select('id, first_name, last_name, subject, created_at, is_read').order('created_at', { ascending: false }).limit(5),
+
+    // Chart Data: Subscribers in last 30 days
+    supabase.from('subscribers').select('subscribed_at').gte('subscribed_at', thirtyDaysAgoISO)
   ]);
 
   // Helper to get count or 0
@@ -58,6 +66,33 @@ export default async function AdminDashboard() {
   };
 
   const recentMessages = getData(results[8]);
+  const rawChartData = getData(results[9]);
+
+  // Process Chart Data
+  const chartDataMap = new Map<string, number>();
+  
+  // Initialize last 30 days with 0
+  for (let i = 29; i >= 0; i--) {
+    const d = new Date();
+    d.setDate(today.getDate() - i);
+    const dateStr = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    chartDataMap.set(dateStr, 0);
+  }
+
+  // Fill in actual data
+  if (rawChartData) {
+    rawChartData.forEach((sub: any) => {
+      if (sub.subscribed_at) {
+        const date = new Date(sub.subscribed_at);
+        const dateStr = date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        if (chartDataMap.has(dateStr)) {
+          chartDataMap.set(dateStr, (chartDataMap.get(dateStr) || 0) + 1);
+        }
+      }
+    });
+  }
+
+  const chartData = Array.from(chartDataMap.entries()).map(([date, count]) => ({ date, count }));
 
   return (
     <div className="space-y-8">
@@ -85,8 +120,10 @@ export default async function AdminDashboard() {
             <div className="text-2xl font-bold">{stats.subscribers}</div>
             <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1">
               <TrendingUp className="h-3 w-3 text-green-500" />
-              <span className="text-green-500 font-medium">+23</span>
-              <span className="opacity-70">this week</span>
+              <span className="text-green-500 font-medium">
+                {rawChartData ? `+${rawChartData.length}` : '0'}
+              </span>
+              <span className="opacity-70">last 30 days</span>
             </p>
           </CardContent>
         </Card>
@@ -139,19 +176,14 @@ export default async function AdminDashboard() {
 
       {/* Charts & Activity */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Subscriber Growth Chart (Placeholder) */}
+        {/* Subscriber Growth Chart */}
         <Card className="lg:col-span-2 border-border bg-card">
           <CardHeader>
             <CardTitle>Subscriber Growth</CardTitle>
             <CardDescription>New subscribers over the last 30 days</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="h-[250px] w-full bg-muted/20 rounded-md flex items-center justify-center border border-dashed border-border">
-              <div className="text-center">
-                <TrendingUp className="h-8 w-8 text-muted-foreground mx-auto mb-2 opacity-50" />
-                <p className="text-muted-foreground text-sm">Chart visualization requires client-side library</p>
-              </div>
-            </div>
+            <SubscriberGrowthChart data={chartData} />
           </CardContent>
         </Card>
 

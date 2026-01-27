@@ -136,10 +136,10 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         </div>
       </header>
 
-      <div className="flex pt-16 min-h-screen">
+      <div className="flex pt-16 h-screen overflow-hidden">
         {/* Sidebar (Fixed on Desktop, Drawer on Mobile) */}
         <aside className={cn(
-          "fixed inset-y-0 left-0 z-40 w-64 bg-background border-r border-border transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:h-[calc(100vh-64px)] overflow-y-auto pt-16 lg:pt-0",
+          "fixed inset-y-0 left-0 z-40 w-64 bg-background border-r border-border transform transition-transform duration-200 ease-in-out lg:translate-x-0 lg:static lg:h-full overflow-y-auto pt-16 lg:pt-0",
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
         )}>
           <div className="p-4 space-y-6">
