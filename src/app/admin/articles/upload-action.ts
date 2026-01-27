@@ -10,7 +10,7 @@ export async function uploadArticleImage(formData: FormData) {
     const { data: { user } } = await supabase.auth.getUser();
     
     if (!user) {
-      return { success: false, error: 'Unauthorized' };
+      return { success: false, error: 'Unauthorized: You must be logged in.' };
     }
 
     // 2. Get File
@@ -21,6 +21,24 @@ export async function uploadArticleImage(formData: FormData) {
 
     // 3. Upload using Admin Client (Bypass RLS)
     const adminClient = createAdminClient();
+    
+    // DEBUG: List buckets to verify visibility
+    const { data: buckets, error: bucketError } = await adminClient.storage.listBuckets();
+    if (bucketError) {
+      console.error('Error listing buckets:', bucketError);
+      return { success: false, error: `Admin Client Connection Error: ${bucketError.message}` };
+    }
+
+    const bucketExists = buckets?.some(b => b.name === 'article-images');
+    if (!bucketExists) {
+      const availableBuckets = buckets?.map(b => b.name).join(', ') || 'none';
+      console.error(`Bucket 'article-images' not found. Available: ${availableBuckets}`);
+      return { 
+        success: false, 
+        error: `System Error: Bucket 'article-images' missing. Found: ${availableBuckets}. Please create it in Supabase Storage.` 
+      };
+    }
+
     const fileExt = file.name.split('.').pop();
     const fileName = `${Math.random().toString(36).substring(2)}_${Date.now()}.${fileExt}`;
     const filePath = `${fileName}`;
@@ -37,8 +55,8 @@ export async function uploadArticleImage(formData: FormData) {
       });
 
     if (uploadError) {
-      console.error('Upload error:', uploadError);
-      return { success: false, error: uploadError.message };
+      console.error('Upload error details:', uploadError);
+      return { success: false, error: `Upload Failed: ${uploadError.message}` };
     }
 
     // 4. Get Public URL
@@ -50,6 +68,6 @@ export async function uploadArticleImage(formData: FormData) {
 
   } catch (error: any) {
     console.error('Server upload error:', error);
-    return { success: false, error: error.message };
+    return { success: false, error: `Server Error: ${error.message}` };
   }
 }
