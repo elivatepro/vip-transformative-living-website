@@ -95,7 +95,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         {isLoading && <PageLoader />}
       </AnimatePresence>
       {/* Header (Fixed) */}
-      <header className="h-16 border-b border-border bg-card fixed top-0 left-0 right-0 z-50 flex items-center px-4 justify-between">
+      <header className="h-16 border-b border-border bg-[#141414] fixed top-0 left-0 right-0 z-50 flex items-center px-4 justify-between">
         <div className="flex items-center gap-4">
           <Button variant="ghost" size="icon" className="lg:hidden" onClick={() => setIsSidebarOpen(!isSidebarOpen)}>
             <Menu className="h-6 w-6" />
@@ -108,9 +108,9 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               if (pathname !== '/admin') setIsLoading(true);
             }}
           >
-             {/* Logo - assuming reusing existing asset or text */}
-            <div className="relative h-10 w-48 block">
-              <Image src="/images/logo-horizontal-gold.png" alt="VIPTL" fill sizes="(max-width: 768px) 100vw, 192px" className="object-contain" priority />
+             {/* Logo */}
+            <div className="relative h-8 w-40 block">
+              <Image src="/images/logo-horizontal-gold.png" alt="VIPTL" fill sizes="(max-width: 768px) 100vw, 160px" className="object-contain" priority />
             </div>
           </Link>
         </div>
