@@ -21,7 +21,8 @@ import {
   Menu,
   Bell,
   Search,
-  User
+  User,
+  Calendar
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import Image from 'next/image';
@@ -62,6 +63,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     {
       title: 'DATA',
       items: [
+        { name: 'Bookings', href: '/admin/bookings', icon: Calendar },
         { name: 'Subscribers', href: '/admin/subscribers', icon: Users },
         { name: 'Downloads', href: '/admin/ebook-downloads', icon: Download },
         { name: 'Messages', href: '/admin/messages', icon: MessageSquare },
