@@ -3,6 +3,7 @@
 import { Button } from '@/components/ui/button';
 import { BookOpen, ArrowRight } from 'lucide-react';
 import Image from 'next/image';
+import { getSiteImageUrl } from "@/lib/site-images";
 
 export default function WhileYouWait() {
   return (
@@ -18,7 +19,7 @@ export default function WhileYouWait() {
             <div className="w-28 h-36 bg-surface-elevated rounded-lg shrink-0 relative overflow-hidden flex items-center justify-center text-zinc-600 shadow-inner">
                {/* Using actual ebook cover if available, otherwise fallback */}
                <Image 
-                  src="/images/Breaking Free Ebook Cover.png" 
+                  src={getSiteImageUrl("/images/Breaking Free Ebook Cover.png")} 
                   alt="Ebook Cover" 
                   fill
                   className="object-cover"

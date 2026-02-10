@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Check, FileText, MonitorPlay } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
 import { NewsletterForm } from "@/components/newsletter-form";
+import { getSiteImageUrl, getResponsiveSiteBackgroundStyle } from "@/lib/site-images";
+import { formatCategoryList } from "@/lib/article-categories";
 
 export const metadata = {
   title: "Resources & Newsletter | VIP Transformative Living",
@@ -29,9 +31,9 @@ export default async function ResourcesPage() {
       <Section className="text-center space-y-6 relative overflow-hidden py-24 md:py-32">
         {/* Background Image with Overlay */}
         <div 
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-0 responsive-site-bg"
           style={{ 
-            backgroundImage: "url('/images/beautiful-sunrise-tatry.jpg')",
+            ...getResponsiveSiteBackgroundStyle("/images/beautiful-sunrise-tatry.jpg"),
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}
@@ -90,7 +92,7 @@ export default async function ResourcesPage() {
         <div className="flex flex-col md:flex-row gap-8 md:gap-16 items-center max-w-6xl mx-auto">
           <div className="flex-1 relative aspect-[3/4] w-2/3 md:w-full max-w-sm md:max-w-lg bg-transparent flex items-center justify-center">
             <Image
-              src="/images/Breaking Free Ebook Cover.png"
+              src={getSiteImageUrl("/images/Breaking Free Ebook Cover.png")}
               alt="Breaking Free E-Book Cover"
               fill
               className="object-contain drop-shadow-2xl hover:scale-105 transition-transform duration-500"
@@ -151,7 +153,7 @@ export default async function ResourcesPage() {
           <div className="relative aspect-video bg-black rounded-xl border border-gold/20 overflow-hidden group cursor-pointer shadow-2xl order-1 md:order-2">
             {/* Placeholder Image for Course Thumbnail */}
             <Image 
-              src="/images/Mountain Hill Silhouette.jpg" 
+              src={getSiteImageUrl("/images/Mountain Hill Silhouette.jpg")} 
               alt="Course Thumbnail" 
               fill
               className="object-cover opacity-60 group-hover:opacity-40 transition-opacity duration-300"
@@ -210,7 +212,7 @@ export default async function ResourcesPage() {
                 </div>
                 <CardHeader>
                   <div className="text-[10px] font-bold text-gold uppercase tracking-wider mb-2">
-                    {newsletter.category}
+                    {formatCategoryList(newsletter.category) || "Uncategorized"}
                   </div>
                   <CardTitle className="group-hover:text-gold transition-colors text-lg md:text-xl line-clamp-2">
                     {newsletter.title}

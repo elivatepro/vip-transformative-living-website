@@ -2,9 +2,8 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
+import { formatCategoryList, hasCategoryMatch } from "@/lib/article-categories";
 
 interface Article {
   id: string;
@@ -27,27 +26,20 @@ export function NewsletterGrid({ initialArticles, categories }: NewsletterGridPr
   const [activeCategory, setActiveCategory] = useState("All");
   const [visibleCount, setVisibleCount] = useState(6);
 
-  const filteredArticles = activeCategory === "All" 
-    ? initialArticles 
-    : initialArticles.filter(article => {
-        const cat = article.category.toLowerCase();
-        const active = activeCategory.toLowerCase();
-        
-        if (active.includes("career") && active.includes("purpose")) {
-            return cat === "career" || cat === "purpose";
-        }
-        if (active.includes("identity") || active.includes("confidence")) {
-            return cat === "identity" || cat === "values";
-        }
-        if (active.includes("relationships") || active.includes("legacy")) {
-            return cat === "relationships";
-        }
-        if (active.includes("mindset") || active.includes("growth")) {
-            return cat === "mindset";
-        }
-        
-        return cat === active;
-    });
+  const categoryMatchMap: Record<string, string[]> = {
+    "Career & Purpose": ["Career", "Purpose"],
+    "Identity & Confidence": ["Identity", "Values"],
+    "Relationships & Legacy": ["Relationships"],
+    "Mindset & Growth": ["Mindset"],
+  };
+
+  const filteredArticles =
+    activeCategory === "All"
+      ? initialArticles
+      : initialArticles.filter((article) => {
+          const candidates = categoryMatchMap[activeCategory] || [activeCategory];
+          return hasCategoryMatch(article.category, candidates);
+        });
 
   const displayedArticles = filteredArticles.slice(0, visibleCount);
 
@@ -126,7 +118,7 @@ export function NewsletterGrid({ initialArticles, categories }: NewsletterGridPr
                         {/* Content */}
                         <div className="p-6">
                           <div className="text-[11px] font-bold tracking-widest uppercase text-[#D4AF37] mb-3">
-                            {article.category}
+                            {formatCategoryList(article.category) || "Uncategorized"}
                           </div>
                           
                           <h3 className="font-serif text-xl text-[#F5F5F5] leading-snug mb-3 line-clamp-2 group-hover:text-white transition-colors">

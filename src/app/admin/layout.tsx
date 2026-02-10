@@ -29,6 +29,7 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { PageLoader } from '@/components/ui/page-loader';
 import { AnimatePresence } from 'framer-motion';
+import { getSiteImageUrl } from "@/lib/site-images";
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   const router = useRouter();
@@ -36,6 +37,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const supabase = createClient();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const isArticleEditorRoute =
+    pathname === "/admin/articles/new" || /^\/admin\/articles\/[^/]+$/.test(pathname);
 
   useEffect(() => {
     setIsLoading(false);
@@ -110,7 +113,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           >
              {/* Logo */}
             <div className="relative h-8 w-40 block">
-              <Image src="/images/logo-horizontal-gold.png" alt="VIPTL" fill sizes="(max-width: 768px) 100vw, 160px" className="object-contain" priority />
+              <Image src={getSiteImageUrl("/images/logo-horizontal-gold.png")} alt="VIPTL" fill sizes="(max-width: 768px) 100vw, 160px" className="object-contain" priority />
             </div>
           </Link>
         </div>
@@ -212,10 +215,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         )}
 
         {/* Main Content */}
-        <main className="flex-1 overflow-y-auto bg-background p-4 md:p-8">
-          <div className="max-w-6xl mx-auto">
-             {children}
-          </div>
+        <main className={cn("flex-1 overflow-y-auto bg-background", isArticleEditorRoute ? "p-0" : "p-4 md:p-8")}>
+          {isArticleEditorRoute ? children : <div className="max-w-6xl mx-auto">{children}</div>}
         </main>
       </div>
     </div>

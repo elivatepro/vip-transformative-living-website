@@ -1,7 +1,8 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Instagram, Linkedin, Twitter, Mail, MapPin, Phone, Send, Share2 } from 'lucide-react';
+import { Facebook, Instagram, Linkedin, Twitter, Mail, MapPin, Phone } from 'lucide-react';
 import { BookCallLink } from "@/components/book-call-button";
+import { getSiteImageUrl } from "@/lib/site-images";
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -14,7 +15,7 @@ export function Footer() {
           <div className="space-y-6">
             <Link href="/" className="inline-block">
               <Image 
-                src="/images/logo-gold-texture.png" 
+                src={getSiteImageUrl("/images/logo-gold-texture.png")} 
                 alt="VIP Transformative Living" 
                 width={180} 
                 height={50} 
@@ -41,22 +42,6 @@ export function Footer() {
                     <Linkedin className="h-5 w-5" />
                   </a>
                   <a href="https://twitter.com/WayneDVIP" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-white transition-colors" aria-label="Follow on Twitter">
-                    <Twitter className="h-5 w-5" />
-                  </a>
-                </div>
-              </div>
-
-              {/* Share */}
-              <div>
-                <span className="text-xs font-bold text-gold uppercase tracking-wider mb-3 block">Share</span>
-                <div className="flex gap-4">
-                   <a href="mailto:?subject=Check out VIP Transformative Living&body=I found this valuable and thought of you: https://viptransformativeliving.com" className="text-muted-foreground hover:text-white transition-colors" aria-label="Share via Email">
-                    <Send className="h-5 w-5" />
-                  </a>
-                  <a href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fviptransformativeliving.com" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-white transition-colors" aria-label="Share on LinkedIn">
-                    <Share2 className="h-5 w-5" />
-                  </a>
-                  <a href="https://twitter.com/intent/tweet?text=Check%20out%20VIP%20Transformative%20Living%20for%20men%20who%20refuse%20to%20settle.&url=https%3A%2F%2Fviptransformativeliving.com" target="_blank" rel="noreferrer" className="text-muted-foreground hover:text-white transition-colors" aria-label="Share on Twitter">
                     <Twitter className="h-5 w-5" />
                   </a>
                 </div>

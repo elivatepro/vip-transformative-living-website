@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Eye, EyeOff } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { getResponsiveSiteBackgroundStyle, getSiteImageUrl } from "@/lib/site-images";
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -40,8 +41,8 @@ export default function AdminLogin() {
   return (
     <div className="relative min-h-screen flex items-center justify-center px-4 overflow-hidden bg-background">
       <div
-        className="absolute inset-0 scale-105 blur-md animate-fade-in"
-        style={{ backgroundImage: "url('/images/alpine-meadow.jpg')", backgroundSize: 'cover', backgroundPosition: 'center' }}
+        className="absolute inset-0 scale-105 blur-md animate-fade-in responsive-site-bg"
+        style={{ ...getResponsiveSiteBackgroundStyle("/images/alpine-meadow.jpg"), backgroundSize: 'cover', backgroundPosition: 'center' }}
       />
       <div className="absolute inset-0 bg-black/70" />
       <div className="absolute inset-0 opacity-30 bg-noise" />
@@ -50,7 +51,7 @@ export default function AdminLogin() {
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-white/6 via-white/0 to-gold/12 pointer-events-none" />
         <CardHeader className="text-center space-y-4 relative z-10 pb-4">
           <div className="mx-auto w-20 h-20 relative drop-shadow-lg">
-            <Image src="/images/logo-gold-texture.png" alt="VIPTL" fill sizes="80px" className="object-contain" />
+            <Image src={getSiteImageUrl("/images/logo-gold-texture.png")} alt="VIPTL" fill sizes="80px" className="object-contain" />
           </div>
           <CardTitle className="text-2xl font-serif tracking-tight">Admin Access</CardTitle>
           <p className="text-sm text-muted-foreground">Secure dashboard for Coach Wayne.</p>

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
+import { getSiteImageUrl } from "@/lib/site-images";
 
 const images = [
   "/images/about-images/20251017_104756.png",
@@ -42,7 +43,7 @@ export function AboutHeroSlider() {
           }}
         >
           <Image
-            src={images[currentIndex]}
+            src={getSiteImageUrl(images[currentIndex])}
             alt="Coach Wayne Dawson"
             fill
             className="object-cover object-top"

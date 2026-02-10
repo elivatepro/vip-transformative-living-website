@@ -8,6 +8,7 @@ import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-
 import { Menu, X, Home, User, Zap, Mic, Library, Mail, Phone } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { BookCallButton } from "@/components/book-call-button";
+import { getSiteImageUrl } from "@/lib/site-images";
 
 const navLinks = [
   { name: 'Home', href: '/', icon: Home },
@@ -73,7 +74,7 @@ export function Navbar({ onNavigate }: { onNavigate?: () => void }) {
           onClick={() => handleLinkClick('/')}
         >
           <Image 
-            src="/images/Gold Texture Logo.png" 
+            src={getSiteImageUrl("/images/Gold Texture Logo.png")} 
             alt="VIP Transformative Living" 
             width={180} 
             height={50} 

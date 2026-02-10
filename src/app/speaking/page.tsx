@@ -5,6 +5,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import Link from "next/link";
 import { Check, Mic2, Users, Lightbulb } from "lucide-react";
 import { createClient } from "@/lib/supabase-server";
+import { getSiteImageUrl, getResponsiveSiteBackgroundStyle } from "@/lib/site-images";
 
 export const metadata = {
   title: "Speaking Services | VIP Transformative Living",
@@ -29,9 +30,9 @@ export default async function SpeakingPage() {
       <Section className="text-center relative overflow-hidden py-32">
         {/* Background Image with Overlay */}
         <div 
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-0 responsive-site-bg"
           style={{ 
-            backgroundImage: "url('/images/pine-trees-mountain.jpg')",
+            ...getResponsiveSiteBackgroundStyle("/images/pine-trees-mountain.jpg"),
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}
@@ -62,7 +63,7 @@ export default async function SpeakingPage() {
         <div className="grid md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
           <div className="order-2 md:order-1 relative h-[500px] rounded-xl overflow-hidden border border-border">
              <Image 
-               src="/images/wayne-speaking.jpg" 
+               src={getSiteImageUrl("/images/wayne-speaking.jpg")} 
                alt="Coach Wayne Speaking" 
                fill 
                className="object-cover"

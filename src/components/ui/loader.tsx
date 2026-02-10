@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
+import { getSiteImageUrl } from "@/lib/site-images";
 
 interface LoaderProps {
   className?: string;
@@ -41,7 +42,7 @@ export function Loader({ className, size = 'md' }: LoaderProps) {
       {/* Logo */}
       <div className="relative z-10 flex items-center justify-center w-[50%] h-[50%]">
          <Image 
-           src="/images/Icon-White.png" 
+           src={getSiteImageUrl("/images/Icon-White.png")} 
            alt="Loading..." 
            width={logoSize[size]} 
            height={logoSize[size]} 

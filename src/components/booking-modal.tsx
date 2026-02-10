@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { X, Clock, Video } from 'lucide-react';
 import Image from 'next/image';
 import { Loader } from '@/components/ui/loader';
+import { getSiteImageUrl } from "@/lib/site-images";
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -67,7 +68,7 @@ export function BookingModal({ isOpen, onClose }: BookingModalProps) {
                   {/* Profile Image */}
                   <div className="relative w-24 h-24 md:w-32 md:h-32 rounded-full overflow-hidden border-2 border-gold shadow-lg shrink-0">
                     <Image
-                      src="/images/coach-wayne-new.jpg"
+                      src={getSiteImageUrl("/images/coach-wayne-new.jpg")}
                       alt="Coach Wayne"
                       fill
                       className="object-cover"

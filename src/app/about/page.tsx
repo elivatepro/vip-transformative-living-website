@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { BookCallButton } from "@/components/book-call-button";
 import { SquareHeroSlider } from "@/components/square-hero-slider";
+import { getResponsiveSiteBackgroundStyle } from "@/lib/site-images";
 
 export const metadata = {
   title: "About Coach Wayne | VIP Transformative Living",
@@ -189,7 +190,10 @@ export default function AboutPage() {
       {/* 4. PERSONAL / BEYOND THE WORK */}
       <Section variant="alternate" className="relative overflow-hidden py-16 md:py-24">
         {/* Mobile-friendly background handling: 'bg-scroll' on mobile, 'md:bg-fixed' on desktop */}
-        <div className="absolute inset-0 bg-[url('/images/grassland-mountains.jpg')] bg-cover bg-center opacity-10 bg-scroll md:bg-fixed" />
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-10 bg-scroll md:bg-fixed responsive-site-bg"
+          style={{ ...getResponsiveSiteBackgroundStyle("/images/grassland-mountains.jpg") }}
+        />
         <div className="absolute top-0 right-0 w-1/3 h-full bg-gold/5 skew-x-12 transform translate-x-20 hidden md:block" />
         
         <div className="max-w-4xl mx-auto text-center relative z-10 px-4">

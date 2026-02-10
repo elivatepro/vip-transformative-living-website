@@ -20,6 +20,27 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Supabase Image Sync
+
+This repo now supports serving site images from Supabase Storage with local fallback.
+
+1. Set required env vars:
+   - `NEXT_PUBLIC_SUPABASE_URL`
+   - `SUPABASE_SERVICE_ROLE_KEY`
+   - optional: `NEXT_PUBLIC_SUPABASE_SITE_IMAGES_BUCKET` (default: `site-images`)
+2. Create the target bucket in Supabase Storage.
+3. Preview upload mapping:
+
+```bash
+npm run sync:site-images -- --dry-run
+```
+
+4. Upload `public/images` to the bucket:
+
+```bash
+npm run sync:site-images
+```
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:

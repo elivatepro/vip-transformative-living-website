@@ -3,6 +3,7 @@
 import { Check, Calendar, Clock, Video } from 'lucide-react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { getResponsiveSiteBackgroundStyle } from "@/lib/site-images";
 
 interface Props {
   name: string;
@@ -17,8 +18,8 @@ export default function ConfirmationHero({ name, date, time, timezone }: Props) 
       {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20"
-          style={{ backgroundImage: 'url("/images/hero-bg-mountain.jpg")' }}
+          className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20 responsive-site-bg"
+          style={{ ...getResponsiveSiteBackgroundStyle("/images/hero-bg-mountain.jpg") }}
         />
         <div className="absolute inset-0 bg-gradient-to-b from-background via-background/80 to-background" />
       </div>

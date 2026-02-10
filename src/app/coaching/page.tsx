@@ -1,6 +1,7 @@
 import React from 'react';
 import { Section } from "@/components/ui/section";
 import { Button } from "@/components/ui/button";
+import { getSiteImageUrl } from "@/lib/site-images";
 import { 
   Check, 
   CheckCircle2, 
@@ -57,7 +58,7 @@ export default async function CoachingPage() {
         {/* Background Image with Overlay */}
         <div className="absolute inset-0 z-0">
           <Image 
-            src="/images/coach-wayne-in-session.png" 
+            src={getSiteImageUrl("/images/coach-wayne-in-session.png")} 
             alt="Coach Wayne in a coaching session" 
             fill 
             className="object-cover opacity-50"
@@ -492,7 +493,7 @@ export default async function CoachingPage() {
               <div className="grid lg:grid-cols-2 gap-12 items-center bg-[#1F1F1F] p-8 md:p-12 rounded-[2.5rem] border border-[#2A2A2A] shadow-xl">
                 <div className="relative aspect-video rounded-3xl overflow-hidden shadow-2xl group cursor-pointer">
                   <Image 
-                    src={featuredTestimonial.video_thumbnail_url || "/images/sunrise-mountains.jpg"} 
+                    src={featuredTestimonial.video_thumbnail_url || getSiteImageUrl("/images/sunrise-mountains.jpg")} 
                     alt="Testimonial Thumbnail" 
                     fill 
                     className="object-cover group-hover:scale-105 transition-transform duration-700"
@@ -678,7 +679,7 @@ export default async function CoachingPage() {
           <div className="max-w-[1280px] mx-auto grid md:grid-cols-2 gap-16 items-center">
              <div className="relative aspect-[4/5] rounded-[2rem] overflow-hidden border border-[rgba(212,175,55,0.2)] shadow-2xl">
                 <Image 
-                  src="/images/wayne-street-night.jpg" 
+                  src={getSiteImageUrl("/images/Mr Wayne In An African Attire.jpeg")} 
                   alt="Coach Wayne" 
                   fill 
                   className="object-cover"
@@ -711,7 +712,7 @@ export default async function CoachingPage() {
       <Section className="relative overflow-hidden py-32 md:py-48">
         <div className="absolute inset-0 z-0">
           <Image 
-            src="/images/sunrise-mountains.jpg" 
+            src={getSiteImageUrl("/images/sunrise-mountains.jpg")} 
             alt="Mountains background" 
             fill 
             className="object-cover blur-[2px] opacity-30"

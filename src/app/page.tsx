@@ -6,6 +6,7 @@ import { ArrowRight, CheckCircle2, ChevronRight, PlayCircle } from "lucide-react
 import { BookCallButton, BookCallLink } from "@/components/book-call-button";
 import { CompactNewsletterForm } from "@/components/compact-newsletter-form";
 import { cookies } from 'next/headers';
+import { getSiteImageUrl, getResponsiveSiteBackgroundStyle } from "@/lib/site-images";
 
 export default async function Home() {
   const cookieStore = await cookies();
@@ -23,9 +24,9 @@ export default async function Home() {
             
             {/* CARD BACKGROUND IMAGE (Blurred) */}
             <div 
-              className="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none z-0"
+              className="absolute inset-0 opacity-40 mix-blend-overlay pointer-events-none z-0 responsive-site-bg"
               style={{
-                backgroundImage: "url('/images/sunset-mountains.jpg')",
+                ...getResponsiveSiteBackgroundStyle("/images/sunset-mountains.jpg"),
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 filter: 'blur(20px) contrast(1.1) brightness(0.7)'
@@ -43,7 +44,7 @@ export default async function Home() {
             {/* MOBILE IMAGE (Stacked Top) */}
             <div className="block md:hidden relative w-full h-[35vh] min-h-[250px]">
               <Image
-                src="/images/wayne-transparent.png"
+                src={getSiteImageUrl("/images/wayne-transparent.png")}
                 alt="Coach Wayne"
                 fill
                 className="object-cover object-top opacity-90 scale-110 translate-y-4"
@@ -56,7 +57,7 @@ export default async function Home() {
             {/* DESKTOP IMAGE (Right Side, Full Height of Card) */}
             <div className="hidden md:block relative h-full w-full order-last">
               <Image
-                src="/images/wayne-transparent.png"
+                src={getSiteImageUrl("/images/wayne-transparent.png")}
                 alt="Coach Wayne"
                 fill
                 className="object-cover object-center lg:object-right-top scale-110 translate-y-10"
@@ -224,7 +225,10 @@ export default async function Home() {
 
       {/* 4. ABOUT TEASER */}
       <Section className="overflow-hidden relative">
-        <div className="absolute inset-0 bg-cover bg-left opacity-60" style={{ backgroundImage: "url('/images/river-timelapse.jpg')" }} />
+        <div
+          className="absolute inset-0 bg-cover bg-left opacity-60 responsive-site-bg"
+          style={{ ...getResponsiveSiteBackgroundStyle("/images/river-timelapse.jpg") }}
+        />
         {/* Darker overlay for better text contrast */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-black/80 to-black/95" />
         
@@ -233,7 +237,7 @@ export default async function Home() {
           <div className="relative order-2 md:order-1">
             <div className="relative aspect-[3/4] md:aspect-[4/5] rounded-2xl overflow-hidden border border-border shadow-2xl group">
               <Image 
-                src="/images/coach-wayne-night.jpg"
+                src={getSiteImageUrl("/images/Photo Oct 15 2025.jpg")}
                 alt="Coach Wayne Dawson"
                 fill
                 className="object-cover transition-transform duration-700 group-hover:scale-105"
@@ -420,7 +424,10 @@ export default async function Home() {
       {!isSubscribed && (
         <Section className="relative overflow-hidden">
           {/* Background Skyline Fade */}
-          <div className="absolute inset-0 bg-cover bg-right opacity-30" style={{ backgroundImage: "url('/images/sunrise-mountains.jpg')" }} />
+          <div
+            className="absolute inset-0 bg-cover bg-right opacity-30 responsive-site-bg"
+            style={{ ...getResponsiveSiteBackgroundStyle("/images/sunrise-mountains.jpg") }}
+          />
           <div className="absolute inset-0 bg-gradient-to-l from-transparent via-[#0A0A0A]/50 to-[#0A0A0A]" />
           
           <div className="max-w-4xl mx-auto bg-surface-elevated/80 backdrop-blur-sm rounded-2xl p-8 md:p-12 border border-border flex flex-col md:flex-row gap-8 items-center relative z-10">
@@ -452,7 +459,7 @@ export default async function Home() {
         {/* Blurred Background Layer */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="/images/coach-wayne-new.jpg"
+            src={getSiteImageUrl("/images/coach-wayne-new.jpg")}
             alt="Background"
             fill
             className="object-cover blur-xl opacity-30 scale-110"

@@ -9,6 +9,7 @@ import { useActionState } from "react";
 import { Mail, MapPin, Phone, Calendar, MessageSquare, Clock } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { BookCallButton } from "@/components/book-call-button";
+import { getResponsiveSiteBackgroundStyle } from "@/lib/site-images";
 
 function SubmitButton() {
   const { pending } = useFormStatus();
@@ -29,9 +30,9 @@ export default function ContactPage() {
       <Section className="text-center relative overflow-hidden py-32">
         {/* Background Image with Overlay */}
         <div 
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-0 responsive-site-bg"
           style={{ 
-            backgroundImage: "url('/images/hero-bg-mountain.jpg')",
+            ...getResponsiveSiteBackgroundStyle("/images/hero-bg-mountain.jpg"),
             backgroundSize: "cover",
             backgroundPosition: "center"
           }}

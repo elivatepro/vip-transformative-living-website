@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import { getSiteImageUrl } from "@/lib/site-images";
 
 export default function CoachWayneNote() {
   return (
@@ -10,7 +11,7 @@ export default function CoachWayneNote() {
           <div className="shrink-0 relative">
              <div className="w-24 h-24 rounded-full overflow-hidden border-2 border-gold relative">
                <Image 
-                 src="/images/coach-wayne-new.jpg"
+                 src={getSiteImageUrl("/images/coach-wayne-new.jpg")}
                  alt="Coach Wayne Dawson"
                  fill
                  className="object-cover"

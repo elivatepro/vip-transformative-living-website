@@ -106,6 +106,16 @@ body {
     background-color: #141414;
   }
 
+  .responsive-site-bg {
+    background-image: var(--site-bg-mobile);
+  }
+
+  @media (min-width: 768px) {
+    .responsive-site-bg {
+      background-image: var(--site-bg-desktop);
+    }
+  }
+
   .animate-fade-in {
     animation: fade-in 0.6s ease forwards;
   }

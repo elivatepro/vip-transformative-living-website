@@ -2,6 +2,8 @@ import { getNewsletterBySlug, getNewsletters } from "@/lib/api";
 import { CompactNewsletterForm } from "@/components/compact-newsletter-form";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { getSiteImageUrl } from "@/lib/site-images";
+import { formatCategoryList, parseCategoryList } from "@/lib/article-categories";
 
 interface PageProps {
   params: { slug: string };
@@ -68,8 +70,22 @@ export default async function NewsletterArticlePage({ params }: PageProps) {
 
   // Related Articles Logic
   const otherArticles = allNewsletters.filter((n: any) => n.slug !== slug);
-  const relatedByCategory = otherArticles.filter((n: any) => n.category === displayData.category);
-  const remainingArticles = otherArticles.filter((n: any) => n.category !== displayData.category);
+  const displayCategories = parseCategoryList(displayData.category);
+  const displayCategorySet = new Set(
+    displayCategories.map((category) => category.toLowerCase()),
+  );
+  const isCategoryRelated = (article: any) =>
+    parseCategoryList(article.category).some((category) =>
+      displayCategorySet.has(category.toLowerCase()),
+    );
+  const relatedByCategory =
+    displayCategorySet.size > 0
+      ? otherArticles.filter((article: any) => isCategoryRelated(article))
+      : [];
+  const remainingArticles =
+    displayCategorySet.size > 0
+      ? otherArticles.filter((article: any) => !isCategoryRelated(article))
+      : otherArticles;
   
   // Combine: Category matches first, then recent others, max 3
   const relatedArticles = [...relatedByCategory, ...remainingArticles].slice(0, 3);
@@ -81,7 +97,7 @@ export default async function NewsletterArticlePage({ params }: PageProps) {
       <header className="bg-[#0A0A0A] px-4 pt-20 pb-16 text-center">
         <div className="max-w-4xl mx-auto">
             <div className="font-sans text-xs font-semibold tracking-[0.2em] uppercase text-[#D4AF37] mb-6">
-                {displayData.category}
+                {formatCategoryList(displayData.category) || "Uncategorized"}
             </div>
 
             <h1 className="font-serif text-4xl md:text-5xl lg:text-[56px] text-[#F5F5F5] leading-[1.1] mb-8 max-w-3xl mx-auto">
@@ -142,7 +158,7 @@ export default async function NewsletterArticlePage({ params }: PageProps) {
         <div className="bg-[#141414] border border-[#2A2A2A] rounded-xl p-8 flex flex-col sm:flex-row gap-6 items-start mb-12">
             <div className="w-20 h-20 rounded-full bg-[#1A1A1A] overflow-hidden flex-shrink-0 border border-[#2A2A2A]">
                 {/* Placeholder for Author Photo */}
-                <img src="/images/Mr Wayne Backgroundless.png" alt="Coach Wayne" className="w-full h-full object-cover bg-[#0A0A0A]" />
+                <img src={getSiteImageUrl("/images/Mr Wayne Backgroundless.png")} alt="Coach Wayne" className="w-full h-full object-cover bg-[#0A0A0A]" />
             </div>
             <div>
                 <div className="text-xs font-bold tracking-widest uppercase text-[#6B7280] mb-1">Written by</div>
@@ -212,7 +228,7 @@ export default async function NewsletterArticlePage({ params }: PageProps) {
                            {/* Content */}
                            <div className="p-6">
                              <div className="text-[11px] font-bold tracking-widest uppercase text-[#D4AF37] mb-3">
-                               {article.category}
+                               {formatCategoryList(article.category) || "Uncategorized"}
                              </div>
                              
                              <h3 className="font-serif text-xl text-[#F5F5F5] leading-snug mb-3 line-clamp-2 group-hover:text-white transition-colors">

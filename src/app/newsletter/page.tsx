@@ -3,6 +3,8 @@ import Link from "next/link";
 import { NewsletterGrid } from "@/components/newsletter-grid";
 import { CompactNewsletterForm } from "@/components/compact-newsletter-form";
 import { cookies } from 'next/headers';
+import { getResponsiveSiteBackgroundStyle } from "@/lib/site-images";
+import { formatCategoryList } from "@/lib/article-categories";
 
 export const metadata = {
   title: "The Weekly Wisdom | VIP Transformative Living",
@@ -72,9 +74,9 @@ export default async function NewsletterPage() {
                  
                  {/* Nature Background Image */}
                  <div 
-                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                   className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105 responsive-site-bg"
                    style={{ 
-                     backgroundImage: "url('/images/sunrise-mountains.jpg')",
+                     ...getResponsiveSiteBackgroundStyle("/images/sunrise-mountains.jpg"),
                      filter: "brightness(0.6)"
                    }}
                  />
@@ -138,7 +140,7 @@ export default async function NewsletterPage() {
                         {/* Content Side */}
                         <div className="p-8 md:p-12 flex flex-col justify-center">
                             <span className="inline-block font-sans text-[11px] font-semibold tracking-widest uppercase text-[#D4AF37] bg-[#D4AF37]/10 px-3 py-1.5 rounded mb-5 w-fit">
-                                {latestArticle.category}
+                                {formatCategoryList(latestArticle.category) || "Uncategorized"}
                             </span>
                             
                             <h2 className="font-serif text-3xl md:text-4xl text-[#F5F5F5] leading-tight mb-5 group-hover:text-white transition-colors">

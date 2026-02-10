@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useEffect, type KeyboardEvent } from 'react';
 import { useEditor, EditorContent, BubbleMenu, FloatingMenu } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Placeholder from '@tiptap/extension-placeholder';
@@ -60,6 +60,39 @@ interface ArticleEditorProps {
   };
 }
 
+function slugify(value: string): string {
+  return value
+    .toLowerCase()
+    .trim()
+    .replace(/['’]/g, '')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
+}
+
+function splitCommaSeparated(value: string | null | undefined): string[] {
+  if (!value) return [];
+
+  return value
+    .split(',')
+    .map((item) => item.trim())
+    .filter(Boolean);
+}
+
+function mergeUniqueValues(existing: string[], incoming: string[]): string[] {
+  const next = [...existing];
+  const seen = new Set(existing.map((item) => item.toLowerCase()));
+
+  for (const item of incoming) {
+    const normalized = item.toLowerCase();
+    if (!seen.has(normalized)) {
+      next.push(item);
+      seen.add(normalized);
+    }
+  }
+
+  return next;
+}
+
 export default function ArticleEditor({ initialData }: ArticleEditorProps) {
   const supabase = createClient();
   const router = useRouter();
@@ -68,8 +101,8 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
   const [articleId, setArticleId] = useState(initialData?.id || null);
   const [title, setTitle] = useState(initialData?.title || '');
   const [featuredImage, setFeaturedImage] = useState<string | null>(initialData?.featured_image_url || null);
-  const [category, setCategory] = useState(initialData?.category || '');
-  const [tags, setTags] = useState<string[]>(initialData?.tags || []);
+  const [selectedCategories, setSelectedCategories] = useState<string[]>(splitCommaSeparated(initialData?.category));
+  const [tags, setTags] = useState<string[]>(mergeUniqueValues([], initialData?.tags || []));
   const [tagInput, setTagInput] = useState('');
   const [metaTitle, setMetaTitle] = useState(initialData?.meta_title || '');
   const [metaDescription, setMetaDescription] = useState(initialData?.meta_description || '');
@@ -80,9 +113,10 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
   const [wordCount, setWordCount] = useState(0);
   const [showPreview, setShowPreview] = useState(false);
   const [publishMenuOpen, setPublishMenuOpen] = useState(false);
+  const category = selectedCategories.join(',');
   
   // Categories
-  const categories = [
+  const categoryOptions = [
     { value: 'Purpose', label: 'Purpose' },
     { value: 'Identity', label: 'Identity' },
     { value: 'Values', label: 'Values' },
@@ -150,10 +184,7 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
   // Auto-generate slug from title
   useEffect(() => {
     if (!initialData?.slug && title && !articleId) {
-      const generatedSlug = title
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, '-')
-        .replace(/(^-|-$)/g, '');
+      const generatedSlug = slugify(title);
       setSlug(generatedSlug);
     }
   }, [title, initialData?.slug, articleId]);
@@ -177,7 +208,7 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
     try {
       const payload = {
         title,
-        slug,
+        slug: slugify(slug),
         content: editor?.getHTML() || '',
         category,
         tags,
@@ -228,7 +259,7 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
     try {
         const payload = {
             title,
-            slug,
+            slug: slugify(slug),
             content: editor?.getHTML() || '',
             category,
             tags,
@@ -322,16 +353,54 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
     }
   };
   
-  // Tags handler
-  const addTag = () => {
-    if (tagInput.trim() && !tags.includes(tagInput.trim())) {
-      setTags([...tags, tagInput.trim()]);
-      setTagInput('');
+  const toggleCategory = (categoryValue: string) => {
+    setSelectedCategories((prev) =>
+      prev.includes(categoryValue)
+        ? prev.filter((item) => item !== categoryValue)
+        : [...prev, categoryValue],
+    );
+  };
+
+  const addTagsFromInput = (rawInput: string) => {
+    const parsedTags = splitCommaSeparated(rawInput);
+    if (parsedTags.length === 0) {
+      return;
+    }
+
+    setTags((prev) => mergeUniqueValues(prev, parsedTags));
+    setTagInput('');
+  };
+
+  const handleTagInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' || e.key === ',') {
+      e.preventDefault();
+      addTagsFromInput(tagInput);
     }
   };
-  
+
   const removeTag = (tag: string) => {
     setTags(tags.filter(t => t !== tag));
+  };
+
+  const clearSlashTrigger = () => {
+    if (!editor) return;
+
+    const { $from } = editor.state.selection;
+    const parent = $from.parent;
+    const content = parent.textContent;
+
+    if (parent.type.name !== 'paragraph' || content.trim() !== '/') {
+      return;
+    }
+
+    const from = $from.start();
+    const to = from + content.length;
+    editor.chain().focus().deleteRange({ from, to }).run();
+  };
+
+  const runSlashCommand = (command: () => void) => {
+    clearSlashTrigger();
+    command();
   };
   
   // Calculate reading time
@@ -342,7 +411,7 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
   return (
     <div className="min-h-screen bg-[#0A0A0A]">
       {/* Top Bar */}
-      <header className="sticky top-0 z-50 bg-[#0A0A0A]/95 backdrop-blur border-b border-[#2A2A2A]">
+      <header className="sticky top-0 z-40 bg-[#0A0A0A]/95 backdrop-blur border-b border-[#2A2A2A]">
         <div className="max-w-[1400px] mx-auto px-6 py-4 flex items-center justify-between">
           <button onClick={() => router.push('/admin/articles')} className="flex items-center gap-2 text-[#9CA3AF] hover:text-white transition">
             <ArrowLeft className="w-4 h-4" />
@@ -618,6 +687,70 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
                 size="small"
               />
             </BubbleMenu>
+
+            <FloatingMenu
+              editor={editor}
+              tippyOptions={{ duration: 100, placement: 'bottom-start' }}
+              shouldShow={({ state }) => {
+                const { $from, empty } = state.selection;
+                if (!empty) return false;
+                if ($from.parent.type.name !== 'paragraph') return false;
+                return $from.parent.textContent.trim() === '/';
+              }}
+              className="grid grid-cols-2 gap-1 p-2 w-[260px] bg-[#1A1A1A] border border-[#2A2A2A] rounded-lg shadow-xl"
+            >
+              <SlashCommandButton
+                label="Heading 1"
+                icon={<Heading1 className="w-3.5 h-3.5" />}
+                onClick={() => runSlashCommand(() => editor.chain().focus().toggleHeading({ level: 1 }).run())}
+              />
+              <SlashCommandButton
+                label="Heading 2"
+                icon={<Heading2 className="w-3.5 h-3.5" />}
+                onClick={() => runSlashCommand(() => editor.chain().focus().toggleHeading({ level: 2 }).run())}
+              />
+              <SlashCommandButton
+                label="Bullet List"
+                icon={<List className="w-3.5 h-3.5" />}
+                onClick={() => runSlashCommand(() => editor.chain().focus().toggleBulletList().run())}
+              />
+              <SlashCommandButton
+                label="Numbered"
+                icon={<ListOrdered className="w-3.5 h-3.5" />}
+                onClick={() => runSlashCommand(() => editor.chain().focus().toggleOrderedList().run())}
+              />
+              <SlashCommandButton
+                label="Quote"
+                icon={<Quote className="w-3.5 h-3.5" />}
+                onClick={() => runSlashCommand(() => editor.chain().focus().toggleBlockquote().run())}
+              />
+              <SlashCommandButton
+                label="Divider"
+                icon={<Minus className="w-3.5 h-3.5" />}
+                onClick={() => runSlashCommand(() => editor.chain().focus().setHorizontalRule().run())}
+              />
+              <SlashCommandButton
+                label="Code Block"
+                icon={<Code className="w-3.5 h-3.5" />}
+                onClick={() => runSlashCommand(() => editor.chain().focus().toggleCodeBlock().run())}
+              />
+              <SlashCommandButton
+                label="Image"
+                icon={<ImageIcon className="w-3.5 h-3.5" />}
+                onClick={() =>
+                  runSlashCommand(() => {
+                    const input = document.createElement('input');
+                    input.type = 'file';
+                    input.accept = 'image/*';
+                    input.onchange = async (e) => {
+                      const file = (e.target as HTMLInputElement).files?.[0];
+                      if (file) handleImageUpload(file, 'content');
+                    };
+                    input.click();
+                  })
+                }
+              />
+            </FloatingMenu>
             
             {/* Editor Content */}
             <EditorContent editor={editor} className="article-editor" />
@@ -632,18 +765,30 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
               <h3 className="text-[11px] font-semibold tracking-wider uppercase text-[#6B7280] mb-4">
                 Category
               </h3>
-              <select
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className="w-full px-4 py-3 bg-[#0A0A0A] border border-[#2A2A2A] rounded-lg text-white text-sm focus:outline-none focus:border-[#D4AF37] transition appearance-none cursor-pointer"
-              >
-                <option value="">Select category</option>
-                {categories.map((cat) => (
-                  <option key={cat.value} value={cat.value}>
-                    {cat.label}
-                  </option>
-                ))}
-              </select>
+              <div className="grid grid-cols-2 gap-2">
+                {categoryOptions.map((cat) => {
+                  const isSelected = selectedCategories.includes(cat.value);
+                  return (
+                    <label
+                      key={cat.value}
+                      className={`cursor-pointer px-3 py-2 rounded-lg border text-sm transition ${
+                        isSelected
+                          ? 'bg-[#D4AF37]/15 border-[#D4AF37] text-[#D4AF37]'
+                          : 'bg-[#0A0A0A] border-[#2A2A2A] text-[#9CA3AF] hover:border-[#3A3A3A] hover:text-white'
+                      }`}
+                    >
+                      <input
+                        type="checkbox"
+                        checked={isSelected}
+                        onChange={() => toggleCategory(cat.value)}
+                        className="sr-only"
+                      />
+                      {cat.label}
+                    </label>
+                  );
+                })}
+              </div>
+              <p className="text-xs text-[#6B7280] mt-3">Select one or more categories.</p>
             </div>
             
             {/* Tags */}
@@ -672,12 +817,13 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
                   type="text"
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
-                  onKeyDown={(e) => e.key === 'Enter' && addTag()}
-                  placeholder="Add tag..."
+                  onKeyDown={handleTagInputKeyDown}
+                  onBlur={() => addTagsFromInput(tagInput)}
+                  placeholder="Add tags (comma separated)..."
                   className="flex-1 px-3 py-2 bg-[#0A0A0A] border border-[#2A2A2A] rounded-lg text-white text-sm focus:outline-none focus:border-[#D4AF37] transition"
                 />
                 <button
-                  onClick={addTag}
+                  onClick={() => addTagsFromInput(tagInput)}
                   className="px-3 py-2 bg-[#2A2A2A] text-white text-sm rounded-lg hover:bg-[#3A3A3A] transition"
                 >
                   Add
@@ -699,7 +845,7 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
                     <input
                       type="text"
                       value={slug}
-                      onChange={(e) => setSlug(e.target.value)}
+                      onChange={(e) => setSlug(slugify(e.target.value))}
                       className="flex-1 px-3 py-2 bg-[#0A0A0A] border border-[#2A2A2A] rounded-lg text-white text-sm focus:outline-none focus:border-[#D4AF37] transition"
                     />
                   </div>
@@ -764,7 +910,7 @@ export default function ArticleEditor({ initialData }: ArticleEditorProps) {
           title={title}
           content={editor.getHTML()}
           featuredImage={featuredImage}
-          category={category}
+          categories={selectedCategories}
           onClose={() => setShowPreview(false)}
         />
       )}
@@ -806,6 +952,24 @@ function ToolbarButton({ onClick, icon, isActive, disabled, tooltip, size = 'nor
   );
 }
 
+interface SlashCommandButtonProps {
+  onClick: () => void;
+  icon: React.ReactNode;
+  label: string;
+}
+
+function SlashCommandButton({ onClick, icon, label }: SlashCommandButtonProps) {
+  return (
+    <button
+      onClick={onClick}
+      className="flex items-center gap-2 px-2.5 py-2 rounded-md text-xs text-[#9CA3AF] hover:bg-[#2A2A2A] hover:text-white transition text-left"
+    >
+      {icon}
+      <span>{label}</span>
+    </button>
+  );
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // PREVIEW MODAL COMPONENT
 // ─────────────────────────────────────────────────────────────────────────────
@@ -814,11 +978,11 @@ interface PreviewModalProps {
   title: string;
   content: string;
   featuredImage: string | null;
-  category: string;
+  categories: string[];
   onClose: () => void;
 }
 
-function PreviewModal({ title, content, featuredImage, category, onClose }: PreviewModalProps) {
+function PreviewModal({ title, content, featuredImage, categories, onClose }: PreviewModalProps) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 p-4">
       <div className="relative w-full max-w-4xl max-h-[90vh] overflow-y-auto bg-[#0A0A0A] rounded-2xl">
@@ -833,10 +997,17 @@ function PreviewModal({ title, content, featuredImage, category, onClose }: Prev
         {/* Preview Content */}
         <article className="p-8 md:p-12">
           {/* Category Badge */}
-          {category && (
-            <span className="inline-block px-3 py-1 bg-[#D4AF37]/10 text-[#D4AF37] text-xs font-semibold tracking-wider uppercase rounded-full mb-6">
-              {category.replace('-', ' & ')}
-            </span>
+          {categories.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-6">
+              {categories.map((category) => (
+                <span
+                  key={category}
+                  className="inline-block px-3 py-1 bg-[#D4AF37]/10 text-[#D4AF37] text-xs font-semibold tracking-wider uppercase rounded-full"
+                >
+                  {category}
+                </span>
+              ))}
+            </div>
           )}
           
           {/* Title */}
